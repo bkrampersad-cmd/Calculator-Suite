@@ -1,0 +1,2597 @@
+Index · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1F3864">
+<title>Beeran's Calculator Suite</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--nb:#1F3864;--na:#2F5496;--nh:#16294E;--ac:#1565C0;--bg:#EEF2F7;
+  --cd:#fff;--ib:#EBF3FB;--rb:#D6E4F0;--tx:#1A202C;--mu:#718096;
+  --bd:#CBD5E0;--ok:#276749;--f:'Segoe UI',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);display:flex;height:100vh;overflow:hidden}
+#sb{width:220px;min-width:220px;background:var(--nb);display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:transform .25s;z-index:100}
+.logo{padding:18px 14px 12px;text-align:center;border-bottom:1px solid #2F5496}
+.lt{font-size:15px;font-weight:700;color:#fff;line-height:1.5}
+.ls{font-size:11px;color:#90C8F0;margin-top:3px}
+.navarea{flex:1;overflow-y:auto;padding:6px 0}
+.navarea::-webkit-scrollbar{width:4px}
+.navarea::-webkit-scrollbar-thumb{background:#2F5496;border-radius:2px}
+.nb{display:flex;align-items:center;gap:9px;width:calc(100% - 16px);margin:2px 8px;
+  padding:9px 12px;background:transparent;border:none;color:#fff;
+  font:600 13px var(--f);cursor:pointer;text-align:left;border-radius:6px;transition:background .15s}
+.nb:hover{background:var(--nh)}
+.nb.on{background:var(--na)}
+.ic{width:18px;text-align:center;flex-shrink:0}
+.sub{display:none;flex-direction:column}
+.sub.open{display:flex}
+.back{display:flex;align-items:center;gap:8px;width:calc(100% - 16px);margin:6px 8px 2px;
+  padding:8px 12px;background:#16294E;border:none;color:#90C8F0;
+  font:600 12px var(--f);cursor:pointer;border-radius:6px}
+.grp{font-size:10px;color:#90C8F0;padding:8px 18px 2px;text-transform:uppercase;letter-spacing:.8px}
+.sbot{padding:8px;border-top:1px solid #2F5496}
+.spg{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;
+  background:var(--na);border:none;color:#fff;font:600 12px var(--f);
+  cursor:pointer;border-radius:8px;margin-top:4px}
+.spg:hover{background:var(--nh)}
+.spg.alt{background:#16294E}
+#ct{flex:1;overflow-y:auto}
+.pg{padding:24px 28px;max-width:1100px}
+.pt{font-size:22px;font-weight:700;color:var(--nb);margin-bottom:4px}
+.ps{font-size:11px;color:var(--mu);margin-bottom:18px}
+#hm{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--nb);
+  border:none;border-radius:8px;color:#fff;font-size:20px;width:40px;height:40px;cursor:pointer}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+.card{background:var(--cd);border-radius:10px;border:1px solid var(--bd);overflow:hidden;margin-bottom:14px}
+.ch{background:var(--nb);color:#fff;font:700 11px var(--f);padding:8px 14px;text-transform:uppercase;letter-spacing:.5px}
+.cb{padding:16px}
+.t2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.fr label{font-size:12px;min-width:170px;flex-shrink:0}
+input,select{font:13px var(--f);background:var(--ib);border:1px solid #B8CCE4;
+  border-radius:6px;padding:7px 10px;color:var(--tx);width:100%;outline:none}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 2px rgba(21,101,192,.15)}
+.br{display:flex;gap:8px;margin-top:14px}
+.btn{padding:8px 18px;border:none;border-radius:8px;font:700 12px var(--f);cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.bc{background:var(--ac);color:#fff}
+.bs{background:var(--bd);color:var(--tx);padding:6px 12px}
+.rr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #F0F4F8}
+.rr:last-child{border-bottom:none}
+.rl{font-size:11px;color:var(--mu)}
+.rv{font-size:13px;font-weight:700}
+.rv.a{color:var(--ac)}.rv.s{color:var(--ok)}
+.rb{background:var(--rb);border-radius:8px;padding:14px 16px;margin-top:10px}
+.cd2{background:#0D1B2A;color:#fff;font:400 28px 'Courier New',monospace;padding:14px;
+  border-radius:8px;text-align:right;min-height:60px;word-break:break-all;margin-bottom:10px}
+.ex{font-size:12px;color:#90C8F0;min-height:16px}
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ck{padding:14px 6px;border:none;border-radius:8px;font:600 14px var(--f);cursor:pointer}
+.ck:hover{filter:brightness(.9)}
+.kn{background:#EBF3FB;color:var(--tx)}.ko{background:#2F5496;color:#fff}
+.ke{background:var(--ac);color:#fff}.kf{background:#CBD5E0;color:var(--tx)}.k2{grid-column:span 2}
+.tg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.tt{background:var(--ib);border:1px solid var(--bd);border-radius:10px;text-align:center;padding:10px 4px}
+.tp{font:700 15px var(--f);color:var(--ac)}.ta{font-size:12px;margin-top:3px}
+.ss{background:var(--nb);border-radius:10px;display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:18px}
+.sc{text-align:center;padding:18px 8px}
+.sn2{font-size:34px;font-weight:700;color:#90C8F0}.sl{font-size:12px;color:#fff;margin-top:2px}
+.cs{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 20px;text-align:center;color:var(--mu);min-height:300px}
+.cs .ci{font-size:48px;margin-bottom:16px;opacity:.5}
+.cs h3{font-size:18px;color:var(--nb);margin-bottom:8px}
+.cs p{font-size:13px;max-width:340px;line-height:1.6}
+.ac{background:var(--cd);border-radius:12px;border:1px solid var(--bd);padding:24px;margin-bottom:14px}
+.qt{background:var(--rb);border-radius:8px;padding:14px 18px;font-style:italic;
+  font-size:13px;color:var(--nb);margin:14px 0;line-height:1.6}
+textarea{width:100%;font:13px var(--f);padding:10px;background:var(--ib);
+  border:1px solid #B8CCE4;border-radius:8px;resize:vertical;min-height:100px;color:var(--tx);outline:none}
+@media(max-width:700px){
+  #hm{display:flex;align-items:center;justify-content:center}
+  #sb{position:fixed;left:0;top:0;transform:translateX(-100%)}
+  #sb.open{transform:translateX(0)}
+  .ov.open{display:block}
+  #ct{padding-top:52px}
+  .pg{padding:14px}.t2{grid-template-columns:1fr}
+  .tg{grid-template-columns:repeat(3,1fr)}.ss{grid-template-columns:1fr}
+  .fr{flex-direction:column;align-items:flex-start}.fr label{min-width:unset}
+}
+</style>
+</head>
+<body>
+<button id="hm" onclick="toggleSB()">&#9776;</button>
+<div class="ov" id="ov" onclick="toggleSB()"></div>
+ 
+<nav id="sb">
+  <div class="logo">
+    <div class="lt">&#129518; Beeran's</div>
+    <div class="lt">Calculator Suite</div>
+    <div class="ls">48 calculators &middot; 8 categories</div>
+  </div>
+ 
+  <div class="navarea" id="mainNav">
+    <button class="nb" onclick="go(0)"><span class="ic">&#128290;</span>Basic Calculator</button>
+    <button class="nb" onclick="go(1)"><span class="ic">&#128300;</span>Scientific &amp; Graph</button>
+    <button class="nb" onclick="showSub('con')"><span class="ic">&#127959;</span>Construction</button>
+    <button class="nb" onclick="showSub('cvt')"><span class="ic">&#128260;</span>Conversion</button>
+    <button class="nb" onclick="showSub('elc')"><span class="ic">&#9889;</span>Electronics</button>
+    <button class="nb" onclick="showSub('fin')"><span class="ic">&#128201;</span>Finance</button>
+    <button class="nb" onclick="showSub('net')"><span class="ic">&#127760;</span>IT Networking</button>
+    <button class="nb" onclick="showSub('med')"><span class="ic">&#127973;</span>Medical</button>
+  </div>
+ 
+  <div class="navarea sub" id="sub-con">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Construction</div>
+    <button class="nb" onclick="go(2)">Area</button>
+    <button class="nb" onclick="go(3)">Batten Spacing</button>
+    <button class="nb" onclick="go(4)">Concrete Volume</button>
+    <button class="nb" onclick="go(5)">Corner Angle</button>
+    <button class="nb" onclick="go(6)">Crown Molding</button>
+    <button class="nb" onclick="go(7)">Decking</button>
+    <button class="nb" onclick="go(8)">Diagonal</button>
+    <button class="nb" onclick="go(9)">Frame Spacing</button>
+    <button class="nb" onclick="go(10)">Lumber</button>
+    <button class="nb" onclick="go(11)">Miter Joint</button>
+    <button class="nb" onclick="go(12)">Overlapping Boards</button>
+    <button class="nb" onclick="go(13)">Parquet Floor</button>
+    <button class="nb" onclick="go(14)">Ramp</button>
+    <button class="nb" onclick="go(15)">Roofing</button>
+    <button class="nb" onclick="go(16)">Slope</button>
+    <button class="nb" onclick="go(17)">Stairs</button>
+    <button class="nb" onclick="go(18)">Volume</button>
+  </div>
+ 
+  <div class="navarea sub" id="sub-cvt">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Conversion</div>
+    <button class="nb" onclick="go(19)">Currency Converter</button>
+    <button class="nb" onclick="go(20)">Time &amp; Date</button>
+    <button class="nb" onclick="go(21)">Unit Converter</button>
+  </div>
+ 
+  <div class="navarea sub" id="sub-elc">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Electronics</div>
+    <button class="nb" onclick="go(22)">Ohm's Law</button>
+    <button class="nb" onclick="go(23)">Series &amp; Parallel</button>
+    <button class="nb" onclick="go(24)">Voltage Divider</button>
+  </div>
+ 
+  <div class="navarea sub" id="sub-fin">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Finance</div>
+    <button class="nb" onclick="go(25)">Amortization</button>
+    <button class="nb" onclick="go(26)">Bill Splitter</button>
+    <button class="nb" onclick="go(27)">Compound Interest</button>
+    <button class="nb" onclick="go(28)">Credit Card Payoff</button>
+    <button class="nb" onclick="go(29)">Depreciation</button>
+    <button class="nb" onclick="go(30)">Loan</button>
+    <button class="nb" onclick="go(31)">MACRS Full</button>
+    <button class="nb" onclick="go(32)">MACRS Rate</button>
+    <button class="nb" onclick="go(33)">Mortgage</button>
+    <button class="nb" onclick="go(34)">ROI</button>
+    <button class="nb" onclick="go(35)">Savings Goal</button>
+  </div>
+ 
+  <div class="navarea sub" id="sub-net">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">IT Networking</div>
+    <button class="nb" onclick="go(36)">Binary to Hex</button>
+    <button class="nb" onclick="go(37)">IP Converter</button>
+    <button class="nb" onclick="go(38)">IPv6 Calculator</button>
+    <button class="nb" onclick="go(39)">Subnet / CIDR</button>
+    <button class="nb" onclick="go(40)">Subnet Cheat Sheet</button>
+    <button class="nb" onclick="go(41)">Supernet</button>
+  </div>
+ 
+  <div class="navarea sub" id="sub-med">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Medical</div>
+    <button class="nb" onclick="go(42)">BMI Calculator</button>
+    <button class="nb" onclick="go(43)">Body Surface Area</button>
+    <button class="nb" onclick="go(44)">Drug Dosage</button>
+    <button class="nb" onclick="go(45)">IV Drip Rate</button>
+    <button class="nb" onclick="go(46)">Opioid Conversion</button>
+    <button class="nb" onclick="go(47)">Pharmacy Dilution</button>
+  </div>
+ 
+  <div class="sbot">
+    <button class="spg" onclick="goPage('settings')">&#9881;&#65039; Settings</button>
+    <button class="spg alt" onclick="goPage('about')">&#8505;&#65039; About</button>
+  </div>
+</nav>
+ 
+<main id="ct"><div id="pg" class="pg"></div></main>
+<script>
+// Flat calc list — index matches onclick go(N)
+var NAMES=[
+  'Basic Calculator','Scientific Calculator',
+  'Area','Batten Spacing','Concrete Volume','Corner Angle','Crown Molding',
+  'Decking','Diagonal','Frame Spacing','Lumber','Miter Joint',
+  'Overlapping Boards','Parquet Floor','Ramp','Roofing','Slope','Stairs','Volume',
+  'Currency Converter','Time & Date','Unit Converter',
+  "Ohm's Law",'Series & Parallel','Voltage Divider',
+  'Amortization','Bill Splitter','Compound Interest','Credit Card Payoff',
+  'Depreciation','Loan','MACRS Full','MACRS Rate','Mortgage','ROI','Savings Goal',
+  'Binary to Hex','IP Converter','IPv6 Calculator','Subnet / CIDR',
+  'Subnet Cheat Sheet','Supernet',
+  'BMI Calculator','Body Surface Area','Drug Dosage',
+  'IV Drip Rate','Opioid Conversion','Pharmacy Dilution'
+];
+ 
+var g=function(id){return document.getElementById(id);};
+var gv=function(id){var e=g(id);return e?e.value:'';};
+function fmtM(v){return '$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtN(v,d){if(!d)d=2;return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function rr(l,v,c){return '<div class="rr"><span class="rl">'+l+'</span><span class="rv'+(c?' '+c:'')+'">'+v+'</span></div>';}
+function card(h,b){return '<div class="card"><div class="ch">'+h+'</div><div class="cb">'+b+'</div></div>';}
+ 
+var activeSub='';
+function showSub(id){
+  g('mainNav').style.display='none';
+  var subs=['con','cvt','elc','fin','net','med'];
+  for(var i=0;i<subs.length;i++){
+    var el=g('sub-'+subs[i]);
+    if(el)el.classList.remove('open');
+  }
+  var s=g('sub-'+id);
+  if(s){s.classList.add('open');activeSub=id;}
+  // Don't closeMB() here — user still needs to pick a calculator
+}
+function hideSub(){
+  g('mainNav').style.display='block';
+  if(activeSub){var el=g('sub-'+activeSub);if(el)el.classList.remove('open');}
+  activeSub='';
+}
+ 
+function go(idx){
+  var name=NAMES[idx];
+  // highlight
+  var all=document.querySelectorAll('.nb');
+  for(var i=0;i<all.length;i++)all[i].classList.remove('on');
+  // find button with onclick go(idx) and highlight
+  var allBtns=document.querySelectorAll('[onclick]');
+  for(var i=0;i<allBtns.length;i++){
+    if(allBtns[i].getAttribute('onclick')==='go('+idx+')'){
+      allBtns[i].classList.add('on'); break;
+    }
+  }
+  if(CALCS[name]){
+    g('pg').innerHTML=CALCS[name].html();
+    CALCS[name].init&&CALCS[name].init();
+  }else{
+    g('pg').innerHTML='<div class="cs"><div class="ci">&#128295;</div><h3>'+name+'</h3>'+
+      '<p>Coming in the next release. The desktop app has all 48 calculators.</p></div>';
+  }
+  closeMB();
+}
+ 
+function goPage(p){
+  var all=document.querySelectorAll('.nb');
+  for(var i=0;i<all.length;i++)all[i].classList.remove('on');
+  if(p==='about'){g('pg').innerHTML=aboutHTML();}
+  if(p==='settings'){g('pg').innerHTML=settingsHTML();initSettings();}
+  closeMB();
+}
+ 
+var CALCS={};
+ 
+CALCS['Basic Calculator']={
+  html:function(){return(
+    '<h1 class="pt">&#128290; Basic Calculator</h1><p class="ps">Full keyboard support</p>'+
+    '<div style="max-width:320px">'+
+    '<div class="cd2"><div class="ex" id="be">&nbsp;</div><div id="bd">0</div></div>'+
+    '<div class="cg">'+
+    '<button class="ck kf" data-k="AC">AC</button>'+
+    '<button class="ck kf" data-k="+/-">+/&#8722;</button>'+
+    '<button class="ck kf" data-k="%">%</button>'+
+    '<button class="ck ko" data-k="/">&divide;</button>'+
+    '<button class="ck kn" data-k="7">7</button>'+
+    '<button class="ck kn" data-k="8">8</button>'+
+    '<button class="ck kn" data-k="9">9</button>'+
+    '<button class="ck ko" data-k="*">&times;</button>'+
+    '<button class="ck kn" data-k="4">4</button>'+
+    '<button class="ck kn" data-k="5">5</button>'+
+    '<button class="ck kn" data-k="6">6</button>'+
+    '<button class="ck ko" data-k="-">&#8722;</button>'+
+    '<button class="ck kn" data-k="1">1</button>'+
+    '<button class="ck kn" data-k="2">2</button>'+
+    '<button class="ck kn" data-k="3">3</button>'+
+    '<button class="ck ko" data-k="+">+</button>'+
+    '<button class="ck kn k2" data-k="0">0</button>'+
+    '<button class="ck kn" data-k=".">.</button>'+
+    '<button class="ck ke" data-k="=">=</button>'+
+    '</div></div>');},
+  init:function(){
+    var cur='0',expr='',op='',prev='',fresh=false;
+    function dsp(){g('bd').textContent=cur;g('be').textContent=expr||'\u00a0';}
+    function bc(k){
+      if((k>='0'&&k<='9')||k==='.'){
+        if(k==='.'&&cur.indexOf('.')>=0)return;
+        cur=((fresh||cur==='0')&&k!=='.')?k:(cur+k);fresh=false;
+      }else if('+-*/'.indexOf(k)>=0){
+        if(op&&!fresh){try{cur=''+new Function('return '+prev+op+cur)();}catch(e){}}
+        prev=cur;op=k;expr=cur+' '+(k==='*'?'x':k)+' ';fresh=true;
+      }else if(k==='='){
+        if(!op)return;
+        try{expr=cur+' =';cur=''+new Function('return '+prev+op+cur)();op='';prev='';fresh=true;}
+        catch(e){cur='Error';}
+      }else if(k==='AC'){cur='0';expr='';op='';prev='';fresh=false;}
+      else if(k==='+/-'){cur=cur[0]==='-'?cur.slice(1):'-'+cur;}
+      else if(k==='%'){try{cur=''+parseFloat(cur)/100;}catch(e){}}
+      dsp();
+    }
+    g('pg').addEventListener('click',function(e){
+      var b=e.target.closest('[data-k]');if(b)bc(b.getAttribute('data-k'));
+    });
+    document.onkeydown=function(e){
+      var m={'Enter':'=','Backspace':'AC','Escape':'AC'};
+      var k=m[e.key]||e.key;
+      if('0123456789.+-*/='.indexOf(k)>=0||k==='AC')bc(k);
+    };
+    dsp();
+  }
+};
+ 
+CALCS['Area']={
+  html:function(){return(
+    '<h1 class="pt">Area Calculator</h1><p class="ps">Rectangle, circle, triangle and more</p>'+
+    '<div class="t2">'+
+    card('SHAPE',
+      '<div class="fr"><label>Shape</label>'+
+      '<select id="ash"><option>Rectangle</option><option>Square</option>'+
+      '<option>Circle</option><option>Triangle</option><option>Trapezoid</option></select></div>'+
+      '<div id="afl"></div>'+
+      '<div class="br"><button class="btn bc" id="acalc">Calculate</button>'+
+      '<button class="btn bs" id="acl">Clear</button></div>')+
+    card('RESULTS','<div id="ares"><div class="rr"><span class="rl">Fill in dimensions</span><span class="rv">&mdash;</span></div></div>')+
+    '</div>');},
+  init:function(){
+    var S={Rectangle:[['Length','al'],['Width','aw']],Square:[['Side','as']],
+      Circle:[['Radius','ar']],Triangle:[['Base','ab'],['Height','ah']],
+      Trapezoid:[['Base 1','ab1'],['Base 2','ab2'],['Height','aht']]};
+    function render(){
+      var s=gv('ash'),h='',f=S[s];
+      for(var i=0;i<f.length;i++)h+='<div class="fr"><label>'+f[i][0]+'</label><input id="'+f[i][1]+'" type="number" placeholder="0"></div>';
+      g('afl').innerHTML=h;
+    }
+    function calc(){
+      var s=gv('ash'),a=NaN,p=NaN;
+      try{
+        if(s==='Rectangle'){var l=+gv('al'),w=+gv('aw');a=l*w;p=2*(l+w);}
+        else if(s==='Square'){var x=+gv('as');a=x*x;p=4*x;}
+        else if(s==='Circle'){var r=+gv('ar');a=Math.PI*r*r;p=2*Math.PI*r;}
+        else if(s==='Triangle'){a=.5*+gv('ab')*+gv('ah');}
+        else if(s==='Trapezoid'){a=.5*(+gv('ab1')+(+gv('ab2')))*+gv('aht');}
+      }catch(e){}
+      g('ares').innerHTML=rr('Area',isNaN(a)?'&mdash;':fmtN(a)+' ft\u00b2','a')+
+        (isNaN(p)?'':rr('Perimeter',fmtN(p)+' ft'))+
+        (isNaN(a)?'':rr('Area (m\u00b2)',fmtN(a*.0929)+' m\u00b2'));
+    }
+    g('ash').addEventListener('change',render);
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='acalc')calc();
+      if(e.target.id==='acl'){var ins=g('afl').querySelectorAll('input');for(var i=0;i<ins.length;i++)ins[i].value='';}
+    });
+    g('pg').addEventListener('input',function(e){if(e.target.id!=='ash')calc();});
+    render();
+  }
+};
+ 
+CALCS['Currency Converter']={
+  html:function(){
+    var CC=['AED','AUD','BRL','CAD','CHF','CNY','COP','DKK','EGP','EUR','GBP',
+      'HKD','IDR','INR','JPY','KRW','MXN','NOK','NZD','PHP','PKR','QAR',
+      'SAR','SEK','SGD','THB','TRY','TTD','USD','ZAR'];
+    var o1='',o2='';
+    for(var i=0;i<CC.length;i++){
+      o1+='<option'+(CC[i]==='USD'?' selected':'')+'>'+CC[i]+'</option>';
+      o2+='<option'+(CC[i]==='EUR'?' selected':'')+'>'+CC[i]+'</option>';
+    }
+    return('<h1 class="pt">Currency Converter</h1><p class="ps">Manual rate or live fetch</p>'+
+      '<div class="t2">'+
+      card('INPUTS',
+        '<div class="fr"><label>Amount</label><input id="camt" type="number" value="1000"></div>'+
+        '<div class="fr"><label>From</label><select id="cfr">'+o1+'</select></div>'+
+        '<div class="fr"><label>To</label><select id="cto">'+o2+'</select></div>'+
+        '<div class="fr"><label>Rate</label>'+
+        '<div style="display:flex;gap:6px;flex:1"><input id="crt" type="number" value="0.92" style="flex:1">'+
+        '<button class="btn bs" id="clv">&#127760; Live</button></div></div>'+
+        '<div id="cst" style="font-size:11px;color:var(--mu);margin-top:4px"></div>'+
+        '<div class="br"><button class="btn bc" id="cgo">Convert</button></div>')+
+      card('RESULT','<div id="crs"></div>')+
+      '</div>');},
+  init:function(){
+    function calc(){
+      var a=+gv('camt'),r=+gv('crt'),f=gv('cfr'),t=gv('cto');
+      if(!r)return;
+      g('crs').innerHTML='<div class="rb"><div style="font-size:26px;font-weight:700;color:var(--ac)">'+
+        t+' '+fmtN(a*r)+'</div><div style="font-size:12px;color:var(--mu);margin-top:4px">'+
+        a.toLocaleString()+' '+f+' @ '+r+'</div></div>'+rr('Reverse','1 '+t+' = '+fmtN(1/r,4)+' '+f);
+    }
+    function live(){
+      var f=gv('cfr').toLowerCase(),t=gv('cto').toLowerCase();
+      g('cst').textContent='Fetching...';
+      fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/'+f+'.json')
+        .then(function(r){return r.json();})
+        .then(function(d){
+          var rate=d[f]&&d[f][t];
+          if(rate){g('crt').value=rate.toFixed(6);g('cst').textContent='Rate as of '+d.date;calc();}
+          else g('cst').textContent='Not found: '+t.toUpperCase();
+        }).catch(function(){g('cst').textContent='Error';});
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='cgo')calc();if(e.target.id==='clv')live();});
+    g('pg').addEventListener('input',function(e){if('camt crt'.indexOf(e.target.id)>=0)calc();});
+    g('pg').addEventListener('change',function(e){if('cfr cto'.indexOf(e.target.id)>=0)calc();});
+    calc();
+  }
+};
+ 
+CALCS["Ohm's Law"]={
+  html:function(){return(
+    '<h1 class="pt">Ohm\'s Law</h1><p class="ps">Fill any two &mdash; rest are calculated</p>'+
+    '<div class="t2">'+
+    card('VALUES (fill any two)',
+      '<div class="fr"><label>Voltage V (volts)</label><input id="ov" type="number" placeholder="blank"></div>'+
+      '<div class="fr"><label>Current I (amps)</label><input id="oi" type="number" placeholder="blank"></div>'+
+      '<div class="fr"><label>Resistance R (ohms)</label><input id="or" type="number" placeholder="blank"></div>'+
+      '<div class="fr"><label>Power P (watts)</label><input id="op" type="number" placeholder="blank"></div>'+
+      '<div class="br"><button class="btn bc" id="ocl">Clear</button></div>')+
+    card('RESULTS','<div id="ors"><div class="rr"><span class="rl">Fill in two values</span></div></div>')+
+    '</div>');},
+  init:function(){
+    function nv(id){var v=gv(id);return(v!==''&&!isNaN(+v))?+v:null;}
+    function calc(){
+      var V=nv('ov'),I=nv('oi'),R=nv('or'),P=nv('op'),v=V,i=I,r=R,p=P;
+      if(v&&i){r=v/i;p=v*i;}else if(v&&r){i=v/r;p=v*v/r;}else if(v&&p){i=p/v;r=v*v/p;}
+      else if(i&&r){v=i*r;p=i*i*r;}else if(i&&p){v=p/i;r=p/(i*i);}
+      else if(r&&p){v=Math.sqrt(p*r);i=Math.sqrt(p/r);}
+      else{g('ors').innerHTML='<div class="rr"><span class="rl">Fill in two values</span></div>';return;}
+      function f(x){return x<.001?fmtN(x*1e6,3)+' u':x<1?fmtN(x*1000,3)+' m':fmtN(x,4)+' ';}
+      g('ors').innerHTML=rr('Voltage',f(v)+'V','a')+rr('Current',f(i)+'A')+rr('Resistance',f(r)+'&#937;')+rr('Power',f(p)+'W');
+    }
+    g('pg').addEventListener('input',calc);
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ocl'){['ov','oi','or','op'].forEach(function(id){g(id)&&(g(id).value='');});}});
+  }
+};
+ 
+CALCS['Bill Splitter']={
+  html:function(){return(
+    '<h1 class="pt">Bill Splitter</h1><p class="ps">Split equally or by custom % &mdash; tip included</p>'+
+    '<div class="t2">'+
+    card('BILL',
+      '<div class="fr"><label>Bill Amount ($)</label><input id="bamt" type="number" value="100"></div>'+
+      '<div class="fr"><label>Tip (%)</label><input id="btip" type="number" value="15"></div>'+
+      '<div class="fr"><label>Number of People</label><input id="bnum" type="number" value="2" min="1" max="20"></div>'+
+      '<div style="margin:10px 0 4px;font-size:11px;font-weight:700;color:var(--mu)">SPLIT METHOD</div>'+
+      '<label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:5px;cursor:pointer">'+
+      '<input type="radio" name="bm" value="eq" checked> Split Equally</label>'+
+      '<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">'+
+      '<input type="radio" name="bm" value="cu"> Custom %</label>'+
+      '<div class="br"><button class="btn bc" id="bcalc">Calculate</button></div>')+
+    card('RESULTS',
+      '<div id="bres"></div>'+
+      '<div id="bcust" style="display:none;margin-top:12px">'+
+      '<div style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:6px">CUSTOM SPLIT</div>'+
+      '<div id="brows"></div>'+
+      '<div id="bptot" style="font-size:12px;font-weight:700;text-align:right;margin-top:4px"></div>'+
+      '</div>')+
+    '</div>'+
+    card('QUICK TIP REFERENCE','<div class="tg" id="btips"></div>'));},
+  init:function(){
+    var cv=[];
+    function mode(){var el=document.querySelector('input[name="bm"]:checked');return el?el.value:'eq';}
+    function rebuild(){
+      var n=Math.max(1,Math.min(20,+gv('bnum')||2));
+      var base=Math.floor(1000/n)/10,rem=Math.round((100-base*n)*10)/10;
+      cv=[];for(var i=0;i<n;i++)cv.push(i===0?Math.round((base+rem)*10)/10:base);
+      var h='';
+      for(var i=0;i<cv.length;i++){
+        h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'+
+          '<span style="font-size:12px;min-width:70px">Person '+(i+1)+':</span>'+
+          '<input type="number" value="'+cv[i]+'" style="width:80px" class="bpct" data-bi="'+i+'">'+
+          '<span style="font-size:11px;color:var(--mu)">%</span>'+
+          '<span style="font-size:12px;font-weight:600;color:var(--ac)" id="bpr'+i+'">&mdash;</span></div>';
+      }
+      g('brows').innerHTML=h;upd();calc();
+    }
+    function upd(){
+      var t=0;for(var i=0;i<cv.length;i++)t+=cv[i];t=Math.round(t*10)/10;
+      g('bptot').textContent='Total: '+t+'%';g('bptot').style.color=Math.abs(t-100)<.05?'var(--ok)':'#C53030';
+    }
+    function calc(){
+      var a=+gv('bamt')||0,t=+gv('btip')||0,n=Math.max(1,+gv('bnum')||2),ta=a*t/100,gr=a+ta;
+      g('bres').innerHTML=rr('Tip',fmtM(ta))+rr('Grand Total',fmtM(gr),'a')+
+        '<div style="height:6px"></div>'+rr('Subtotal/Person',fmtM(a/n))+rr('Tip/Person',fmtM(ta/n))+rr('Total/Person',fmtM(gr/n),'a');
+      var th='';[5,10,15,18,20].forEach(function(p){th+='<div class="tt"><div class="tp">'+p+'%</div><div class="ta">'+fmtM(a*p/100)+'</div></div>';});
+      g('btips').innerHTML=th;
+      if(mode()==='cu')cv.forEach(function(p,i){var e=g('bpr'+i);if(e)e.textContent=fmtM(gr*p/100);});
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='bcalc')calc();});
+    g('pg').addEventListener('change',function(e){
+      if(e.target.name==='bm'){g('bcust').style.display=mode()==='cu'?'block':'none';if(mode()==='cu')rebuild();else calc();}
+    });
+    g('pg').addEventListener('input',function(e){
+      if(e.target.id==='bnum')rebuild();
+      else if(e.target.classList.contains('bpct')){cv[+e.target.getAttribute('data-bi')]=+e.target.value||0;upd();calc();}
+      else if(e.target.id==='bamt'||e.target.id==='btip')calc();
+    });
+    rebuild();
+  }
+};
+ 
+CALCS['Subnet / CIDR']={
+  html:function(){return(
+    '<h1 class="pt">Subnet / CIDR</h1><p class="ps">IPv4 network analysis</p>'+
+    '<div class="t2">'+
+    card('INPUT',
+      '<div class="fr"><label>IP / CIDR</label><input id="snip" type="text" value="192.168.1.0/24"></div>'+
+      '<div class="br"><button class="btn bc" id="sncalc">Calculate</button>'+
+      '<button class="btn bs" id="snsmp">Sample</button></div>')+
+    card('DETAILS','<div id="snres"><div class="rr"><span class="rl">Enter CIDR above</span></div></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      try{
+        var p=gv('snip').split('/'),ipS=p[0].trim(),pf=parseInt(p[1]);
+        if(isNaN(pf)||pf<0||pf>32)throw new Error('Bad prefix');
+        var o=ipS.split('.').map(Number);if(o.length!==4)throw new Error('Bad IP');
+        var ipN=(((o[0]*256+o[1])*256+o[2])*256+o[3])>>>0;
+        var mask=(pf===0?0:((-1)<<(32-pf)))>>>0;
+        var net=(ipN&mask)>>>0,bcast=(net|(~mask>>>0))>>>0,hosts=Math.max(0,bcast-net-1);
+        function ip(n){return[(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');}
+        function mk(m){return[(m>>>24)&255,(m>>>16)&255,(m>>>8)&255,m&255].join('.');}
+        g('snres').innerHTML=rr('Network',ip(net),'a')+rr('Mask',mk(mask))+rr('Broadcast',ip(bcast))+
+          rr('First',pf>=31?'N/A':ip(net+1))+rr('Last',pf>=31?'N/A':ip(bcast-1))+
+          rr('Hosts',hosts.toLocaleString(),'a')+rr('CIDR',ip(net)+'/'+pf)+rr('Class',o[0]<128?'A':o[0]<192?'B':'C');
+      }catch(e){g('snres').innerHTML='<div class="rr"><span class="rl" style="color:#C53030">'+e.message+'</span></div>';}
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='sncalc')calc();if(e.target.id==='snsmp'){g('snip').value='10.0.0.0/8';calc();}});
+    g('pg').addEventListener('keydown',function(e){if(e.key==='Enter')calc();});
+    calc();
+  }
+};
+ 
+CALCS['BMI Calculator']={
+  html:function(){return(
+    '<h1 class="pt">BMI Calculator</h1><p class="ps">For reference only</p>'+
+    '<div class="t2">'+
+    card('MEASUREMENTS',
+      '<div class="fr"><label>Units</label>'+
+      '<select id="bmu"><option value="imp">Imperial (lbs / ft)</option><option value="met">Metric (kg / cm)</option></select></div>'+
+      '<div id="bmfl"></div>'+
+      '<div class="br"><button class="btn bc" id="bmcalc">Calculate</button></div>')+
+    card('RESULT','<div id="bmres"></div>')+
+    '</div>');},
+  init:function(){
+    var sc=[[0,'Underweight','#3B82F6'],[18.5,'Normal','var(--ok)'],[25,'Overweight','#F59E0B'],[30,'Obese','#EF4444']];
+    function rf(){
+      var m=gv('bmu')==='met';
+      g('bmfl').innerHTML=m?
+        '<div class="fr"><label>Weight (kg)</label><input id="bmkg" type="number" placeholder="70"></div>'+
+        '<div class="fr"><label>Height (cm)</label><input id="bmcm" type="number" placeholder="170"></div>':
+        '<div class="fr"><label>Weight (lbs)</label><input id="bmlb" type="number" placeholder="154"></div>'+
+        '<div class="fr"><label>Height (ft)</label><input id="bmft" type="number" placeholder="5"></div>'+
+        '<div class="fr"><label>Height (in)</label><input id="bmin" type="number" placeholder="7"></div>';
+    }
+    function calc(){
+      var b;
+      if(gv('bmu')==='met'){var k=+gv('bmkg'),c=+gv('bmcm');if(!k||!c)return;b=k/((c/100)*(c/100));}
+      else{var l=+gv('bmlb'),f=+gv('bmft'),n=+gv('bmin');if(!l||!f)return;var t=f*12+n;b=703*l/(t*t);}
+      var cat=sc[0];for(var i=0;i<sc.length;i++)if(b>=sc[i][0])cat=sc[i];
+      var rows='';for(var i=0;i<sc.length;i++)rows+=rr(sc[i][1],'BMI '+sc[i][0]+'');
+      g('bmres').innerHTML='<div style="text-align:center;padding:14px 0">'+
+        '<div style="font-size:50px;font-weight:700;color:'+cat[2]+'">'+fmtN(b,1)+'</div>'+
+        '<div style="font-size:15px;font-weight:600;color:'+cat[2]+';margin-top:4px">'+cat[1]+'</div></div>'+rows;
+    }
+    g('pg').addEventListener('change',function(e){if(e.target.id==='bmu')rf();});
+    g('pg').addEventListener('click',function(e){if(e.target.id==='bmcalc')calc();});
+    g('pg').addEventListener('input',calc);
+    rf();
+  }
+};
+ 
+CALCS['Compound Interest']={
+  html:function(){return(
+    '<h1 class="pt">Compound Interest</h1><p class="ps">The power of compounding</p>'+
+    '<div class="t2">'+
+    card('INPUTS',
+      '<div class="fr"><label>Principal ($)</label><input id="cip" type="number" value="10000"></div>'+
+      '<div class="fr"><label>Annual Rate (%)</label><input id="cir" type="number" value="7" step="0.1"></div>'+
+      '<div class="fr"><label>Years</label><input id="cit" type="number" value="10"></div>'+
+      '<div class="fr"><label>Compounds / Year</label>'+
+      '<select id="cin"><option value="1">Annually</option><option value="2">Semi-annually</option>'+
+      '<option value="4">Quarterly</option><option value="12" selected>Monthly</option>'+
+      '<option value="365">Daily</option></select></div>'+
+      '<div class="fr"><label>Monthly Contribution</label><input id="cic" type="number" value="0"></div>'+
+      '<div class="br"><button class="btn bc" id="cicalc">Calculate</button></div>')+
+    card('RESULTS','<div id="cirs"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var P=+gv('cip'),r=+gv('cir')/100,t=+gv('cit'),n=+gv('cin'),c=+gv('cic');
+      if(!P||r<=0||t<=0)return;
+      var base=P*Math.pow(1+r/n,n*t),contrib=c>0?c*(Math.pow(1+r/n,n*t)-1)/(r/n):0,total=base+contrib;
+      var inv=P+c*12*t;
+      g('cirs').innerHTML=rr('Final Balance',fmtM(total),'a')+rr('Principal',fmtM(P))+
+        rr('Contributions',fmtM(c*12*t))+rr('Interest',fmtM(total-inv),'s')+rr('Return',fmtN((total/inv-1)*100,1)+'%');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='cicalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+function aboutHTML(){return(
+  '<h1 class="pt">Welcome! &#128075;</h1>'+
+  '<div class="ac"><p style="font-size:13px;line-height:1.7;margin-bottom:14px">'+
+  'Beeran\'s Calculator Suite was born from a simple idea &mdash; why juggle a dozen different tools '+
+  'when everything you need can live beautifully in one place?<br><br>'+
+  'Whether you\'re a contractor pricing a job, a nurse calculating a dosage, a developer subnetting '+
+  'a network, or just splitting dinner with friends &mdash; this suite was built with you in mind.</p>'+
+  '<div class="ss"><div class="sc"><div class="sn2">48</div><div class="sl">Calculators</div></div>'+
+  '<div class="sc"><div class="sn2">8</div><div class="sl">Categories</div></div>'+
+  '<div class="sc"><div class="sn2">&#8734;</div><div class="sl">Free Forever</div></div></div>'+
+  '<div class="qt">&ldquo;I wanted to bring many of the most popular everyday calculators together '+
+  'in one beautiful, easy-to-use suite &mdash; no ads, no internet required.&rdquo;</div>'+
+  '<div style="font-size:12px;color:var(--mu);padding-top:12px;border-top:1px solid var(--bd)">'+
+  '&#10024; Created by <strong>Beeran Rampersad</strong> &middot; Built with Claude AI</div></div>'+
+  '<div class="ac"><h2 style="font-size:18px;font-weight:700;color:var(--nb);margin-bottom:10px">&#128172; Got a Suggestion?</h2>'+
+  '<p style="font-size:13px;margin-bottom:12px;line-height:1.6">This suite grows with its users! Write your idea below.</p>'+
+  '<textarea id="sugtxt" rows="4" placeholder="Write your thoughts here..."></textarea>'+
+  '<div style="display:flex;justify-content:flex-end;margin-top:8px">'+
+  '<button class="btn bc" id="sugsend">&#128231; Submit</button></div></div>'+
+  '<div style="text-align:center;font-size:11px;color:var(--mu);padding:10px 0">v1.0.0 &middot; &copy; 2026 Beeran Rampersad</div>');
+}
+document.addEventListener('click',function(e){
+  if(e.target.id==='sugsend'){
+    var m=(g('sugtxt')||{value:''}).value.trim();if(!m)return;
+    window.open('mailto:CalculatorSuite@outlook.com?subject='+encodeURIComponent('Calculator Suite Suggestion')+'&body='+encodeURIComponent(m));
+  }
+});
+ 
+var SK='cs';
+function loadS(){try{return JSON.parse(localStorage.getItem(SK)||'{}');}catch(e){return{};}}
+function settingsHTML(){return(
+  '<h1 class="pt">Settings</h1><div class="ac">'+
+  '<div class="fr"><label>Theme</label><select id="sth"><option value="lt">Light</option><option value="dk">Dark</option></select></div>'+
+  '<div class="br"><button class="btn bc" id="ssv">Save</button><button class="btn bs" id="srs">Reset</button></div></div>');}
+function initSettings(){var s=loadS();if(g('sth'))g('sth').value=s.t||'lt';}
+function applyT(s){
+  if(s.t==='dk'){
+    document.documentElement.style.setProperty('--bg','#1a1a2e');document.documentElement.style.setProperty('--cd','#16213e');
+    document.documentElement.style.setProperty('--tx','#e0e0e0');document.documentElement.style.setProperty('--bd','#2a2a4a');
+    document.documentElement.style.setProperty('--ib','#0f3460');document.documentElement.style.setProperty('--rb','#0f3460');
+    document.documentElement.style.setProperty('--mu','#a0a0b0');
+  }else{
+    document.documentElement.style.setProperty('--bg','#EEF2F7');document.documentElement.style.setProperty('--cd','#fff');
+    document.documentElement.style.setProperty('--tx','#1A202C');document.documentElement.style.setProperty('--bd','#CBD5E0');
+    document.documentElement.style.setProperty('--ib','#EBF3FB');document.documentElement.style.setProperty('--rb','#D6E4F0');
+    document.documentElement.style.setProperty('--mu','#718096');
+  }
+}
+document.addEventListener('click',function(e){
+  if(e.target.id==='ssv'){var s={t:gv('sth')};localStorage.setItem(SK,JSON.stringify(s));applyT(s);e.target.textContent='Saved!';}
+  if(e.target.id==='srs'){localStorage.removeItem(SK);location.reload();}
+});
+ 
+function toggleSB(){g('sb').classList.toggle('open');g('ov').classList.toggle('open');}
+function closeMB(){g('sb').classList.remove('open');g('ov').classList.remove('open');}
+ 
+applyT(loadS());
+go(0);
+ 
+// ── Scientific Calculator ────────────────────────────────────────────────────
+CALCS['Scientific Calculator']={
+  html:function(){return(
+    '<h1 class="pt">Scientific Calculator</h1><p class="ps">DEG / RAD &mdash; full expression evaluation</p>'+
+    '<div style="max-width:500px">'+
+    '<div class="cd2" style="min-height:70px">'+
+    '<div class="ex" id="se" style="font-size:11px;min-height:14px">&nbsp;</div>'+
+    '<div id="sd" style="font-size:24px">0</div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px">'+
+    '<button class="ck kf" id="sc-deg" onclick="sc_deg()">DEG</button>'+
+    '<button class="ck kf" onclick="sc_k(\'(\')">( )</button>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">'+
+    '<button class="ck kf" onclick="sc_fn(\'sin\')">sin</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'cos\')">cos</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'tan\')">tan</button>'+
+    '<button class="ck kn" onclick="sc_k(\'7\')">7</button>'+
+    '<button class="ck kn" onclick="sc_k(\'8\')">8</button>'+
+    '<button class="ck kn" onclick="sc_k(\'9\')">9</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'asin\')">sin&#8315;&sup1;</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'acos\')">cos&#8315;&sup1;</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'atan\')">tan&#8315;&sup1;</button>'+
+    '<button class="ck kn" onclick="sc_k(\'4\')">4</button>'+
+    '<button class="ck kn" onclick="sc_k(\'5\')">5</button>'+
+    '<button class="ck kn" onclick="sc_k(\'6\')">6</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'log\')">log</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'ln\')">ln</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'sqrt\')">&#8730;</button>'+
+    '<button class="ck kn" onclick="sc_k(\'1\')">1</button>'+
+    '<button class="ck kn" onclick="sc_k(\'2\')">2</button>'+
+    '<button class="ck kn" onclick="sc_k(\'3\')">3</button>'+
+    '<button class="ck kf" onclick="sc_sq()">x&sup2;</button>'+
+    '<button class="ck kf" onclick="sc_fn(\'pow\')">x&#696;</button>'+
+    '<button class="ck kf" onclick="sc_fact()">n!</button>'+
+    '<button class="ck kn" onclick="sc_k(\'0\')">0</button>'+
+    '<button class="ck kn" onclick="sc_k(\'.\')">.</button>'+
+    '<button class="ck kf" onclick="sc_k(\'(\')"> ( </button>'+
+    '<button class="ck kf" onclick="sc_pi()">&#960;</button>'+
+    '<button class="ck kf" onclick="sc_e()">e</button>'+
+    '<button class="ck kf" onclick="sc_inv()">1/x</button>'+
+    '<button class="ck kf" onclick="sc_k(\')\')"> ) </button>'+
+    '<button class="ck ko" onclick="sc_k(\'+\')">+</button>'+
+    '<button class="ck ko" onclick="sc_k(\'-\')">&minus;</button>'+
+    '<button class="ck kf" onclick="sc_bk()">&#9003;</button>'+
+    '<button class="ck ko" onclick="sc_k(\'*\')">&times;</button>'+
+    '<button class="ck ko" onclick="sc_k(\'/\')">&divide;</button>'+
+    '<button class="ck kf" onclick="sc_ac()">AC</button>'+
+    '<button class="ck ke" style="grid-column:span 2" onclick="sc_eq()">=</button>'+
+    '</div></div>');},
+  init:function(){
+    window._sc_expr='';window._sc_deg=true;window._sc_mem=0;
+    window.sc_dsp=function(){
+      var d=g('sd'),e=g('se');if(!d||!e)return;
+      d.textContent=window._sc_expr||'0';e.textContent=window._sc_deg?'DEG':'RAD';
+      var db=g('sc-deg');if(db)db.textContent=window._sc_deg?'DEG':'RAD';
+    };
+    window.sc_deg=function(){window._sc_deg=!window._sc_deg;sc_dsp();};
+    window.sc_k=function(k){
+      if(k==='()')k='()';
+      window._sc_expr+=k;sc_dsp();
+    };
+    window.sc_fn=function(fn){window._sc_expr+=fn+'(';sc_dsp();};
+    window.sc_sq=function(){window._sc_expr='('+window._sc_expr+')^2';sc_dsp();};
+    window.sc_inv=function(){window._sc_expr='1/('+window._sc_expr+')';sc_dsp();};
+    window.sc_pi=function(){window._sc_expr+='\u03c0';sc_dsp();};
+    window.sc_e=function(){window._sc_expr+='e';sc_dsp();};
+    window.sc_fact=function(){window._sc_expr=window._sc_expr+'!';sc_dsp();};
+    window.sc_bk=function(){window._sc_expr=window._sc_expr.slice(0,-1);sc_dsp();};
+    window.sc_ac=function(){window._sc_expr='';sc_dsp();};
+    window.sc_eq=function(){
+      try{
+        var expr=window._sc_expr;
+        var deg=window._sc_deg;
+        var t=deg?Math.PI/180:1,t2=deg?180/Math.PI:1;
+        // Replace constants
+        expr=expr.replace(/\u03c0/g,'Math.PI').replace(/\be\b/g,'Math.E');
+        // Replace functions
+        expr=expr.replace(/sin\(/g,'Math.sin(_d(').replace(/cos\(/g,'Math.cos(_d(').replace(/tan\(/g,'Math.tan(_d(');
+        expr=expr.replace(/asin\(/g,'_r(Math.asin(').replace(/acos\(/g,'_r(Math.acos(').replace(/atan\(/g,'_r(Math.atan(');
+        expr=expr.replace(/log\(/g,'Math.log10(').replace(/ln\(/g,'Math.log(').replace(/sqrt\(/g,'Math.sqrt(');
+        expr=expr.replace(/pow\(/g,'Math.pow(');
+        // Close double-close for inverse trig
+        expr=expr.replace(/_r\(Math\.(asin|acos|atan)\(([^)]+)\)/g,function(m,fn,arg){return '_r(Math.'+fn+'('+arg+')';});
+        // Handle ^ for pow
+        expr=expr.replace(/([^\s]+)\^([^\s]+)/g,'Math.pow($1,$2)');
+        // Handle factorial
+        expr=expr.replace(/(\d+)!/g,function(m,n){var x=parseInt(n),r=1;for(var i=2;i<=x;i++)r*=i;return r;});
+        var _d=function(x){return deg?x*Math.PI/180:x;};
+        var _r=function(x){return deg?x*180/Math.PI:x;};
+        var result=new Function('Math,_d,_r','return '+expr)(Math,_d,_r);
+        g('se').textContent=window._sc_expr+' =';
+        g('sd').textContent=parseFloat(result.toFixed(10))+'';
+        window._sc_expr=''+parseFloat(result.toFixed(10));
+      }catch(err){g('sd').textContent='Error';window._sc_expr='';}
+    };
+    sc_dsp();
+  }
+};
+ 
+// ── Finance: Loan ────────────────────────────────────────────────────────────
+CALCS['Loan']={
+  html:function(){return(
+    '<h1 class="pt">Loan Calculator</h1><p class="ps">Monthly payment, total cost, and interest breakdown</p>'+
+    '<div class="t2">'+
+    card('LOAN DETAILS',
+      '<div class="fr"><label>Loan Amount ($)</label><input id="lnP" type="number" value="20000"></div>'+
+      '<div class="fr"><label>Annual Interest Rate (%)</label><input id="lnR" type="number" value="6.5" step="0.1"></div>'+
+      '<div class="fr"><label>Term (years)</label><input id="lnT" type="number" value="5"></div>'+
+      '<div class="br"><button class="btn bc" id="lnCalc">Calculate</button>'+
+      '<button class="btn bs" id="lnClr">Clear</button></div>')+
+    card('RESULTS','<div id="lnRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var P=+gv('lnP'),r=+gv('lnR')/100/12,n=+gv('lnT')*12;
+      if(!P||!n)return;
+      var M=r>0?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n;
+      var total=M*n,interest=total-P;
+      g('lnRes').innerHTML=
+        rr('Monthly Payment',fmtM(M),'a')+
+        rr('Total Payment',fmtM(total))+
+        rr('Total Interest',fmtM(interest),'s')+
+        rr('Principal',fmtM(P))+
+        rr('Interest %',fmtN(interest/total*100,1)+'% of total');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='lnCalc')calc();if(e.target.id==='lnClr'){['lnP','lnR','lnT'].forEach(function(id){g(id).value='';});}});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: Mortgage ────────────────────────────────────────────────────────
+CALCS['Mortgage']={
+  html:function(){return(
+    '<h1 class="pt">Mortgage Calculator</h1><p class="ps">Home purchase payment breakdown</p>'+
+    '<div class="t2">'+
+    card('MORTGAGE DETAILS',
+      '<div class="fr"><label>Home Price ($)</label><input id="mgP" type="number" value="350000"></div>'+
+      '<div class="fr"><label>Down Payment ($)</label><input id="mgD" type="number" value="70000"></div>'+
+      '<div class="fr"><label>Annual Rate (%)</label><input id="mgR" type="number" value="7.0" step="0.1"></div>'+
+      '<div class="fr"><label>Term (years)</label><input id="mgT" type="number" value="30"></div>'+
+      '<div class="fr"><label>Property Tax ($/yr)</label><input id="mgTx" type="number" value="3600"></div>'+
+      '<div class="fr"><label>Home Insurance ($/yr)</label><input id="mgIns" type="number" value="1200"></div>'+
+      '<div class="br"><button class="btn bc" id="mgCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="mgRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var price=+gv('mgP'),down=+gv('mgD'),r=+gv('mgR')/100/12,n=+gv('mgT')*12;
+      var tax=+gv('mgTx')/12,ins=+gv('mgIns')/12;
+      var P=price-down;if(!P||P<=0||!n)return;
+      var M=r>0?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n;
+      var total=M*n,interest=total-P,monthly=M+tax+ins;
+      g('mgRes').innerHTML=
+        rr('Loan Amount',fmtM(P))+
+        rr('Down Payment',fmtM(down)+' ('+fmtN(down/price*100,1)+'%)')+
+        '<div style="height:6px"></div>'+
+        rr('Principal & Interest',fmtM(M),'a')+
+        rr('Property Tax /mo',fmtM(tax))+
+        rr('Insurance /mo',fmtM(ins))+
+        rr('Total Monthly',fmtM(monthly),'a')+
+        '<div style="height:6px"></div>'+
+        rr('Total Interest',fmtM(interest),'s')+
+        rr('Total Cost',fmtM(total+down+tax*n+ins*n));
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='mgCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: Amortization ────────────────────────────────────────────────────
+CALCS['Amortization']={
+  html:function(){return(
+    '<h1 class="pt">Amortization Schedule</h1><p class="ps">Full payment schedule with interest breakdown per period</p>'+
+    '<div class="t2">'+
+    card('LOAN DETAILS',
+      '<div class="fr"><label>Loan Amount ($)</label><input id="amP" type="number" value="25000"></div>'+
+      '<div class="fr"><label>Annual Rate (%)</label><input id="amR" type="number" value="5.5" step="0.1"></div>'+
+      '<div class="fr"><label>Term (years)</label><input id="amT" type="number" value="5"></div>'+
+      '<div class="br"><button class="btn bc" id="amCalc">Calculate</button></div>')+
+    card('SUMMARY','<div id="amSum"></div>')+
+    '</div>'+
+    '<div class="card" style="margin-top:14px"><div class="ch">PAYMENT SCHEDULE (first 12 months)</div>'+
+    '<div class="cb" style="overflow-x:auto"><table id="amTbl" style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr style="background:var(--rb)">'+
+    '<th style="padding:6px 10px;text-align:left">#</th>'+
+    '<th style="padding:6px 10px;text-align:right">Payment</th>'+
+    '<th style="padding:6px 10px;text-align:right">Principal</th>'+
+    '<th style="padding:6px 10px;text-align:right">Interest</th>'+
+    '<th style="padding:6px 10px;text-align:right">Balance</th>'+
+    '</tr></thead><tbody id="amBody"></tbody></table></div></div>');},
+  init:function(){
+    function calc(){
+      var P=+gv('amP'),r=+gv('amR')/100/12,n=+gv('amT')*12;
+      if(!P||!n)return;
+      var M=r>0?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n;
+      var total=M*n,interest=total-P;
+      g('amSum').innerHTML=rr('Monthly Payment',fmtM(M),'a')+rr('Total Payment',fmtM(total))+rr('Total Interest',fmtM(interest),'s');
+      var bal=P,rows='',show=Math.min(12,n);
+      for(var i=1;i<=show;i++){
+        var int=bal*r,prin=M-int;bal-=prin;
+        var bg=i%2===0?'background:var(--bg)':'';
+        rows+='<tr style="'+bg+'"><td style="padding:5px 10px">'+i+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(M)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(prin)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(int)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(Math.max(0,bal))+'</td></tr>';
+      }
+      if(n>12)rows+='<tr><td colspan="5" style="padding:6px 10px;color:var(--mu);font-style:italic">... '+( n-12)+' more payments</td></tr>';
+      g('amBody').innerHTML=rows;
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='amCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: Credit Card Payoff ───────────────────────────────────────────────
+CALCS['Credit Card Payoff']={
+  html:function(){return(
+    '<h1 class="pt">Credit Card Payoff</h1><p class="ps">How long until your balance is zero</p>'+
+    '<div class="t2">'+
+    card('CARD DETAILS',
+      '<div class="fr"><label>Current Balance ($)</label><input id="ccB" type="number" value="5000"></div>'+
+      '<div class="fr"><label>Annual APR (%)</label><input id="ccR" type="number" value="19.99" step="0.1"></div>'+
+      '<div class="fr"><label>Monthly Payment ($)</label><input id="ccM" type="number" value="150"></div>'+
+      '<div class="fr"><label>New Monthly Charges ($)</label><input id="ccC" type="number" value="0"></div>'+
+      '<div class="br"><button class="btn bc" id="ccCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="ccRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var B=+gv('ccB'),apr=+gv('ccR')/100,M=+gv('ccM'),newChg=+gv('ccC');
+      var r=apr/12;
+      if(!B||M<=0)return;
+      if(M<=B*r+newChg){
+        g('ccRes').innerHTML='<div style="color:#C53030;font-weight:700;padding:12px 0">'+
+          'Payment too low &mdash; balance will never reach zero.<br>Minimum to reduce balance: '+fmtM(B*r+newChg+0.01)+'</div>';return;
+      }
+      var bal=B,months=0,totalInt=0;
+      while(bal>0.01&&months<600){
+        var int=bal*r;totalInt+=int;bal=bal+int+newChg-M;
+        if(bal<0)bal=0;months++;
+      }
+      var yrs=Math.floor(months/12),mos=months%12;
+      g('ccRes').innerHTML=
+        rr('Months to Payoff',months+' months ('+yrs+'y '+mos+'m)','a')+
+        rr('Total Interest Paid',fmtM(totalInt),'s')+
+        rr('Total Amount Paid',fmtM(B+totalInt))+
+        rr('Interest % of Balance',fmtN(totalInt/B*100,1)+'%');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ccCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: ROI ──────────────────────────────────────────────────────────────
+CALCS['ROI']={
+  html:function(){return(
+    '<h1 class="pt">ROI Calculator</h1><p class="ps">Return on Investment &mdash; simple and annualized</p>'+
+    '<div class="t2">'+
+    card('INVESTMENT',
+      '<div class="fr"><label>Initial Investment ($)</label><input id="roiI" type="number" value="10000"></div>'+
+      '<div class="fr"><label>Final Value ($)</label><input id="roiF" type="number" value="15000"></div>'+
+      '<div class="fr"><label>Holding Period (years)</label><input id="roiY" type="number" value="3" step="0.5"></div>'+
+      '<div class="br"><button class="btn bc" id="roiCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="roiRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var ini=+gv('roiI'),fin=+gv('roiF'),yrs=+gv('roiY');
+      if(!ini||!fin)return;
+      var gain=fin-ini,roi=gain/ini*100;
+      var ann=yrs>0?(Math.pow(fin/ini,1/yrs)-1)*100:0;
+      g('roiRes').innerHTML=
+        rr('Gain / Loss',fmtM(gain),(gain>=0?'s':''))+
+        rr('ROI',fmtN(roi,2)+'%','a')+
+        (yrs>0?rr('Annualized ROI',fmtN(ann,2)+'%'):'')+
+        rr('Multiple',fmtN(fin/ini,2)+'x')+
+        rr('Break-even',fmtM(ini));
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='roiCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: Savings Goal ─────────────────────────────────────────────────────
+CALCS['Savings Goal']={
+  html:function(){return(
+    '<h1 class="pt">Savings Goal</h1><p class="ps">Monthly contribution needed to reach your target</p>'+
+    '<div class="t2">'+
+    card('GOAL DETAILS',
+      '<div class="fr"><label>Savings Goal ($)</label><input id="sgG" type="number" value="50000"></div>'+
+      '<div class="fr"><label>Current Savings ($)</label><input id="sgC" type="number" value="5000"></div>'+
+      '<div class="fr"><label>Annual Return (%)</label><input id="sgR" type="number" value="5" step="0.1"></div>'+
+      '<div class="fr"><label>Years to Goal</label><input id="sgY" type="number" value="5"></div>'+
+      '<div class="br"><button class="btn bc" id="sgCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="sgRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var goal=+gv('sgG'),cur=+gv('sgC'),r=+gv('sgR')/100/12,n=+gv('sgY')*12;
+      if(!goal||!n)return;
+      var fv=cur*Math.pow(1+r,n);
+      var monthly=r>0?(goal-fv)*r/(Math.pow(1+r,n)-1):Math.max(0,(goal-fv)/n);
+      if(monthly<0)monthly=0;
+      var totalContrib=monthly*n,totalInt=goal-cur-totalContrib;
+      g('sgRes').innerHTML=
+        rr('Monthly Contribution',fmtM(monthly),'a')+
+        rr('Current Savings Growth',fmtM(fv))+
+        rr('Total Contributions',fmtM(totalContrib))+
+        rr('Interest Earned',fmtM(Math.max(0,totalInt)),'s')+
+        rr('Goal',fmtM(goal));
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='sgCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: Depreciation ─────────────────────────────────────────────────────
+CALCS['Depreciation']={
+  html:function(){return(
+    '<h1 class="pt">Depreciation Calculator</h1><p class="ps">Straight-line, declining balance, and double-declining</p>'+
+    '<div class="t2">'+
+    card('ASSET DETAILS',
+      '<div class="fr"><label>Asset Cost ($)</label><input id="dpC" type="number" value="50000"></div>'+
+      '<div class="fr"><label>Salvage Value ($)</label><input id="dpS" type="number" value="5000"></div>'+
+      '<div class="fr"><label>Useful Life (years)</label><input id="dpL" type="number" value="10"></div>'+
+      '<div class="fr"><label>Method</label>'+
+      '<select id="dpM"><option value="sl">Straight-Line</option>'+
+      '<option value="db">Declining Balance (1.5x)</option>'+
+      '<option value="dd">Double-Declining Balance</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="dpCalc">Calculate</button></div>')+
+    card('SUMMARY','<div id="dpSum"></div>')+
+    '</div>'+
+    '<div class="card" style="margin-top:14px"><div class="ch">DEPRECIATION SCHEDULE</div>'+
+    '<div class="cb" style="overflow-x:auto">'+
+    '<table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr style="background:var(--rb)">'+
+    '<th style="padding:6px 10px;text-align:left">Year</th>'+
+    '<th style="padding:6px 10px;text-align:right">Depreciation</th>'+
+    '<th style="padding:6px 10px;text-align:right">Cumulative</th>'+
+    '<th style="padding:6px 10px;text-align:right">Book Value</th></tr></thead>'+
+    '<tbody id="dpBody"></tbody></table></div></div>');},
+  init:function(){
+    function calc(){
+      var cost=+gv('dpC'),salv=+gv('dpS'),life=+gv('dpL'),method=gv('dpM');
+      if(!cost||!life||life<1)return;
+      var basis=cost-salv,rows='',cum=0,book=cost;
+      var annualSL=basis/life;
+      var rate=method==='db'?1.5/life:method==='dd'?2/life:0;
+      var totalDep=0,maxDep=basis;
+      for(var yr=1;yr<=life;yr++){
+        var dep;
+        if(method==='sl'){dep=annualSL;}
+        else{dep=book*rate;if(dep<annualSL)dep=annualSL;dep=Math.min(dep,book-salv);}
+        dep=Math.max(0,Math.min(dep,book-salv));
+        cum+=dep;book-=dep;totalDep+=dep;
+        var bg=yr%2===0?'background:var(--bg)':'';
+        rows+='<tr style="'+bg+'"><td style="padding:5px 10px">'+yr+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(dep)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(cum)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(Math.max(salv,book))+'</td></tr>';
+      }
+      g('dpSum').innerHTML=rr('Annual Depreciation (SL)',fmtM(annualSL))+rr('Total Depreciation',fmtM(totalDep),'a')+rr('Salvage Value',fmtM(salv));
+      g('dpBody').innerHTML=rows;
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='dpCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: MACRS Rate ───────────────────────────────────────────────────────
+CALCS['MACRS Rate']={
+  html:function(){return(
+    '<h1 class="pt">MACRS Rate Calculator</h1><p class="ps">IRS Modified Accelerated Cost Recovery System &mdash; half-year convention</p>'+
+    '<div class="t2">'+
+    card('ASSET DETAILS',
+      '<div class="fr"><label>Asset Cost ($)</label><input id="mrC" type="number" value="100000"></div>'+
+      '<div class="fr"><label>Property Class</label>'+
+      '<select id="mrCl">'+
+      '<option value="3">3-Year (tools, racehorses)</option>'+
+      '<option value="5" selected>5-Year (cars, computers)</option>'+
+      '<option value="7">7-Year (office furniture, equipment)</option>'+
+      '<option value="10">10-Year (water transport)</option>'+
+      '<option value="15">15-Year (land improvements)</option>'+
+      '<option value="20">20-Year (farm buildings)</option>'+
+      '</select></div>'+
+      '<div class="br"><button class="btn bc" id="mrCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="mrRes"></div>')+
+    '</div>'+
+    '<div class="card" style="margin-top:14px"><div class="ch">DEPRECIATION SCHEDULE</div>'+
+    '<div class="cb" style="overflow-x:auto">'+
+    '<table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr style="background:var(--rb)">'+
+    '<th style="padding:6px 10px;text-align:left">Year</th>'+
+    '<th style="padding:6px 10px;text-align:right">Rate %</th>'+
+    '<th style="padding:6px 10px;text-align:right">Depreciation</th>'+
+    '<th style="padding:6px 10px;text-align:right">Cumulative</th>'+
+    '<th style="padding:6px 10px;text-align:right">Book Value</th></tr></thead>'+
+    '<tbody id="mrBody"></tbody></table></div></div>');},
+  init:function(){
+    var RATES={
+      3:[33.33,44.45,14.81,7.41],
+      5:[20.00,32.00,19.20,11.52,11.52,5.76],
+      7:[14.29,24.49,17.49,12.49,8.93,8.92,8.93,4.46],
+      10:[10.00,18.00,14.40,11.52,9.22,7.37,6.55,6.55,6.56,6.55,3.28],
+      15:[5.00,9.50,8.55,7.70,6.93,6.23,5.90,5.90,5.91,5.90,5.91,5.90,5.91,5.90,5.91,2.95],
+      20:[3.750,7.219,6.677,6.177,5.713,5.285,4.888,4.522,4.462,4.461,4.462,4.461,4.462,4.461,4.462,4.461,4.462,4.461,4.462,4.461,2.231]
+    };
+    function calc(){
+      var cost=+gv('mrC'),cls=+gv('mrCl');
+      if(!cost||!cls)return;
+      var rates=RATES[cls];if(!rates)return;
+      var cum=0,rows='';
+      for(var i=0;i<rates.length;i++){
+        var dep=cost*rates[i]/100;cum+=dep;
+        var bg=i%2===0?'background:var(--bg)':'';
+        rows+='<tr style="'+bg+'"><td style="padding:5px 10px">'+(i+1)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtN(rates[i],2)+'%</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(dep)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(cum)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(Math.max(0,cost-cum))+'</td></tr>';
+      }
+      g('mrRes').innerHTML=rr('Asset Cost',fmtM(cost))+rr('Property Class',cls+'-Year')+rr('Total Depreciation',fmtM(cum),'a');
+      g('mrBody').innerHTML=rows;
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='mrCalc')calc();});
+    g('pg').addEventListener('change',calc);g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Finance: MACRS Full ───────────────────────────────────────────────────────
+CALCS['MACRS Full']={
+  html:function(){return(
+    '<h1 class="pt">MACRS Full Calculator</h1><p class="ps">With basis adjustments and convention options</p>'+
+    '<div class="t2">'+
+    card('ASSET DETAILS',
+      '<div class="fr"><label>Asset Cost ($)</label><input id="mfC" type="number" value="100000"></div>'+
+      '<div class="fr"><label>Section 179 Deduction ($)</label><input id="mfS" type="number" value="0"></div>'+
+      '<div class="fr"><label>Bonus Depreciation (%)</label><input id="mfB" type="number" value="0"></div>'+
+      '<div class="fr"><label>Property Class</label>'+
+      '<select id="mfCl">'+
+      '<option value="5" selected>5-Year</option><option value="7">7-Year</option>'+
+      '<option value="10">10-Year</option><option value="15">15-Year</option>'+
+      '</select></div>'+
+      '<div class="br"><button class="btn bc" id="mfCalc">Calculate</button></div>')+
+    card('YEAR 1 SUMMARY','<div id="mfRes"></div>')+
+    '</div>'+
+    '<div class="card" style="margin-top:14px"><div class="ch">SCHEDULE (after adjustments)</div>'+
+    '<div class="cb" style="overflow-x:auto">'+
+    '<table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr style="background:var(--rb)">'+
+    '<th style="padding:6px 10px;text-align:left">Year</th>'+
+    '<th style="padding:6px 10px;text-align:right">Rate %</th>'+
+    '<th style="padding:6px 10px;text-align:right">Depreciation</th>'+
+    '<th style="padding:6px 10px;text-align:right">Cumulative</th>'+
+    '<th style="padding:6px 10px;text-align:right">Book Value</th></tr></thead>'+
+    '<tbody id="mfBody"></tbody></table></div></div>');},
+  init:function(){
+    var RATES={5:[20,32,19.2,11.52,11.52,5.76],7:[14.29,24.49,17.49,12.49,8.93,8.92,8.93,4.46],
+      10:[10,18,14.4,11.52,9.22,7.37,6.55,6.55,6.56,6.55,3.28],
+      15:[5,9.5,8.55,7.7,6.93,6.23,5.9,5.9,5.91,5.9,5.91,5.9,5.91,5.9,5.91,2.95]};
+    function calc(){
+      var cost=+gv('mfC'),s179=Math.min(+gv('mfS')||0,cost);
+      var bonus=(+gv('mfB')||0)/100,cls=+gv('mfCl');
+      var rates=RATES[cls];if(!rates)return;
+      var basis=cost-s179;var bonusDep=basis*bonus;basis-=bonusDep;
+      var yr1=s179+bonusDep+(basis*rates[0]/100),cum=0,rows='';
+      for(var i=0;i<rates.length;i++){
+        var dep=basis*rates[i]/100;if(i===0)dep+=s179+bonusDep;
+        cum+=dep;
+        var bg=i%2===0?'background:var(--bg)':'';
+        rows+='<tr style="'+bg+'"><td style="padding:5px 10px">'+(i+1)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtN(rates[i],2)+'%</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(dep)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(cum)+'</td>'+
+          '<td style="padding:5px 10px;text-align:right">'+fmtM(Math.max(0,cost-cum))+'</td></tr>';
+      }
+      g('mfRes').innerHTML=
+        rr('Original Cost',fmtM(cost))+
+        (s179>0?rr('Section 179',fmtM(s179)):'')+
+        (bonusDep>0?rr('Bonus Depreciation',fmtM(bonusDep)):'')+
+        rr('Year 1 Total Deduction',fmtM(yr1),'a')+
+        rr('Depreciable Basis (MACRS)',fmtM(basis));
+      g('mfBody').innerHTML=rows;
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='mfCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Conversion: Time & Date ──────────────────────────────────────────────────
+CALCS['Time & Date']={
+  html:function(){return(
+    '<h1 class="pt">Time &amp; Date Calculator</h1><p class="ps">Date difference, add/subtract days, age, and day of week</p>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'+
+    card('DATE DIFFERENCE',
+      '<div class="fr"><label>Start Date</label><input id="td1" type="date"></div>'+
+      '<div class="fr"><label>End Date</label><input id="td2" type="date"></div>'+
+      '<div class="br"><button class="btn bc" id="tdDiff">Calculate</button>'+
+      '<button class="btn bs" id="tdToday">Today</button></div>'+
+      '<div id="tdDiffRes"></div>')+
+    card('ADD / SUBTRACT DAYS',
+      '<div class="fr"><label>Start Date</label><input id="tdBase" type="date"></div>'+
+      '<div class="fr"><label>Days (negative to subtract)</label><input id="tdDays" type="number" value="30"></div>'+
+      '<div class="br"><button class="btn bc" id="tdAdd">Calculate</button></div>'+
+      '<div id="tdAddRes"></div>')+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">'+
+    card('AGE CALCULATOR',
+      '<div class="fr"><label>Date of Birth</label><input id="tdDob" type="date"></div>'+
+      '<div class="br"><button class="btn bc" id="tdAge">Calculate Age</button></div>'+
+      '<div id="tdAgeRes"></div>')+
+    card('DAY OF WEEK',
+      '<div class="fr"><label>Date</label><input id="tdDow" type="date"></div>'+
+      '<div class="br"><button class="btn bc" id="tdDowCalc">Get Day</button></div>'+
+      '<div id="tdDowRes"></div>')+
+    '</div>');},
+  init:function(){
+    var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    function today(){var d=new Date();return d.toISOString().split('T')[0];}
+    function parseD(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+    function fmtD(d){return MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
+ 
+    g('td1').value=today();
+    var d2=new Date();d2.setDate(d2.getDate()+30);g('td2').value=d2.toISOString().split('T')[0];
+    g('tdBase').value=today();g('tdDow').value=today();
+    var dob=new Date();dob.setFullYear(dob.getFullYear()-25);g('tdDob').value=dob.toISOString().split('T')[0];
+ 
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='tdToday'){g('td1').value=today();g('td2').value=today();}
+      if(e.target.id==='tdDiff'){
+        var a=parseD(gv('td1')),b=parseD(gv('td2'));
+        var ms=b-a,days=Math.round(ms/86400000);
+        var abs=Math.abs(days),wks=Math.floor(abs/7),rem=abs%7;
+        var yrs=Math.abs(b.getFullYear()-a.getFullYear());
+        g('tdDiffRes').innerHTML=
+          rr('Days',days+(days<0?' (past)':''),'a')+
+          rr('Weeks + Days',wks+'w '+rem+'d')+
+          rr('Approx. Years',fmtN(Math.abs(days)/365.25,2));
+      }
+      if(e.target.id==='tdAdd'){
+        var base=parseD(gv('tdBase')),days2=+gv('tdDays');
+        var result=new Date(base.getTime()+days2*86400000);
+        g('tdAddRes').innerHTML=
+          rr('Result Date',fmtD(result),'a')+
+          rr('Day of Week',DAYS[result.getDay()]);
+      }
+      if(e.target.id==='tdAge'){
+        var dob2=parseD(gv('tdDob')),now=new Date();
+        var age=now.getFullYear()-dob2.getFullYear();
+        var m=now.getMonth()-dob2.getMonth();
+        if(m<0||(m===0&&now.getDate()<dob2.getDate()))age--;
+        var nextBday=new Date(now.getFullYear(),dob2.getMonth(),dob2.getDate());
+        if(nextBday<now)nextBday.setFullYear(nextBday.getFullYear()+1);
+        var daysLeft=Math.round((nextBday-now)/86400000);
+        g('tdAgeRes').innerHTML=
+          rr('Age',age+' years','a')+
+          rr('Days to Next Birthday',daysLeft+' days')+
+          rr('Born on',DAYS[dob2.getDay()]);
+      }
+      if(e.target.id==='tdDowCalc'){
+        var d=parseD(gv('tdDow'));
+        g('tdDowRes').innerHTML=
+          rr('Day of Week',DAYS[d.getDay()],'a')+
+          rr('Week of Year',Math.ceil((((d-new Date(d.getFullYear(),0,1))/86400000)+1)/7))+
+          rr('Day of Year',Math.ceil((d-new Date(d.getFullYear(),0,0))/86400000));
+      }
+    });
+  }
+};
+ 
+// ── Conversion: Unit Converter ───────────────────────────────────────────────
+CALCS['Unit Converter']={
+  html:function(){return(
+    '<h1 class="pt">Unit Converter</h1><p class="ps">Length, weight, temperature, volume, area, speed</p>'+
+    '<div class="t2">'+
+    card('CONVERT',
+      '<div class="fr"><label>Category</label>'+
+      '<select id="ucCat">'+
+      '<option value="len">Length</option><option value="wgt">Weight / Mass</option>'+
+      '<option value="tmp">Temperature</option><option value="vol">Volume</option>'+
+      '<option value="area">Area</option><option value="spd">Speed</option>'+
+      '</select></div>'+
+      '<div class="fr"><label>From</label><select id="ucFrom"></select></div>'+
+      '<div class="fr"><label>Value</label><input id="ucVal" type="number" value="1"></div>'+
+      '<div class="fr"><label>To</label><select id="ucTo"></select></div>'+
+      '<div class="br"><button class="btn bc" id="ucCalc">Convert</button></div>')+
+    card('RESULT','<div id="ucRes"></div>')+
+    '</div>'+
+    '<div id="ucAll" class="card" style="margin-top:14px;display:none">'+
+    '<div class="ch">ALL CONVERSIONS</div><div class="cb"><div id="ucAllRows"></div></div></div>');},
+  init:function(){
+    var UNITS={
+      len:{label:'Length',base:'m',units:{mm:0.001,cm:0.01,m:1,km:1000,inches:0.0254,feet:0.3048,yards:0.9144,miles:1609.344,'nautical mi':1852}},
+      wgt:{label:'Weight',base:'g',units:{mg:0.001,g:1,kg:1000,oz:28.3495,lb:453.592,'ton (US)':907185,'tonne (metric)':1000000}},
+      vol:{label:'Volume',base:'ml',units:{ml:1,L:1000,tsp:4.92892,tbsp:14.7868,cup:236.588,'fl oz':29.5735,pt:473.176,qt:946.353,gal:3785.41,'m\u00b3':1000000}},
+      area:{label:'Area',base:'m\u00b2',units:{'mm\u00b2':0.000001,'cm\u00b2':0.0001,'m\u00b2':1,'km\u00b2':1000000,'in\u00b2':0.00064516,'ft\u00b2':0.0929,'yd\u00b2':0.8361,acre:4046.86,hectare:10000}},
+      spd:{label:'Speed',base:'m/s',units:{'m/s':1,'km/h':0.277778,'mph':0.44704,'ft/s':0.3048,knots:0.514444}},
+      tmp:{label:'Temperature',base:'C',units:{'\u00b0C':1,'\u00b0F':1,K:1}}
+    };
+ 
+    function populate(){
+      var cat=gv('ucCat'),u=UNITS[cat];
+      var keys=Object.keys(u.units);
+      var o=keys.map(function(k){return '<option>'+k+'</option>';}).join('');
+      g('ucFrom').innerHTML=o;g('ucTo').innerHTML=o;
+      g('ucTo').selectedIndex=1;
+    }
+ 
+    function convert(val,from,to,cat){
+      if(cat==='tmp'){
+        var c;
+        if(from==='\u00b0C')c=val;
+        else if(from==='\u00b0F')c=(val-32)*5/9;
+        else c=val-273.15;
+        if(to==='\u00b0C')return c;
+        if(to==='\u00b0F')return c*9/5+32;
+        return c+273.15;
+      }
+      var u=UNITS[cat].units;
+      return val*u[from]/u[to];
+    }
+ 
+    function calc(){
+      var cat=gv('ucCat'),val=+gv('ucVal'),from=gv('ucFrom'),to=gv('ucTo');
+      var result=convert(val,from,to,cat);
+      g('ucRes').innerHTML=
+        '<div class="rb" style="text-align:center">'+
+        '<div style="font-size:22px;font-weight:700;color:var(--ac)">'+fmtN(result,6).replace(/\.?0+$/,'')+'</div>'+
+        '<div style="font-size:12px;color:var(--mu);margin-top:4px">'+val+' '+from+' = '+fmtN(result,6).replace(/\.?0+$/,'')+' '+to+'</div>'+
+        '</div>';
+      // All conversions
+      var u=UNITS[cat];var keys=Object.keys(u.units);
+      var rows=keys.map(function(k){
+        var r=convert(val,from,k,cat);
+        return rr(k,fmtN(r,6).replace(/\.?0+$/,'')+(k===from?' \u2190':''),(k===to?'a':''));
+      }).join('');
+      g('ucAll').style.display='block';
+      g('ucAllRows').innerHTML=rows;
+    }
+ 
+    g('ucCat').addEventListener('change',populate);
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ucCalc')calc();});
+    g('pg').addEventListener('change',function(e){if(e.target.id==='ucFrom'||e.target.id==='ucTo')calc();});
+    g('pg').addEventListener('input',function(e){if(e.target.id==='ucVal')calc();});
+    populate();calc();
+  }
+};
+ 
+// ── Electronics: Series & Parallel ───────────────────────────────────────────
+CALCS['Series & Parallel']={
+  html:function(){return(
+    '<h1 class="pt">Series &amp; Parallel Resistors</h1><p class="ps">Calculate total resistance for up to 10 resistors</p>'+
+    '<div class="t2">'+
+    card('RESISTORS',
+      '<div id="spRows"></div>'+
+      '<div class="br">'+
+      '<button class="btn bc" id="spAdd">+ Add Resistor</button>'+
+      '<button class="btn bs" id="spRem">&#8722; Remove</button>'+
+      '</div>'+
+      '<div class="br"><button class="btn bc" id="spCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="spRes"><div class="rr"><span class="rl">Add resistors and calculate</span></div></div>')+
+    '</div>'+
+    card('INDIVIDUAL BREAKDOWN','<div id="spBreak"></div>'));},
+  init:function(){
+    var count=3;
+    function renderRows(){
+      var h='';
+      for(var i=0;i<count;i++){
+        h+='<div class="fr"><label>R'+(i+1)+' (&#937;)</label>'+
+          '<input id="spr'+i+'" type="number" placeholder="e.g. 100" value="'+(i===0?100:i===1?220:470)+'"></div>';
+      }
+      g('spRows').innerHTML=h;
+    }
+    function calc(){
+      var vals=[],series=0,parallel=0;
+      for(var i=0;i<count;i++){
+        var v=+gv('spr'+i);
+        if(v>0){vals.push({n:i+1,v:v});series+=v;parallel+=1/v;}
+      }
+      if(!vals.length)return;
+      var par=1/parallel;
+      g('spRes').innerHTML=
+        rr('Series Total',fmtN(series,4)+' \u03a9','a')+
+        rr('Parallel Total',fmtN(par,4)+' \u03a9','a')+
+        rr('Resistors Used',vals.length)+
+        rr('Ratio (S/P)',fmtN(series/par,3));
+      var bh='';
+      vals.forEach(function(r){
+        bh+=rr('R'+r.n+' = '+r.v+'\u03a9',
+          'Series share: '+fmtN(r.v/series*100,1)+'% | Parallel share: '+fmtN((1/r.v)/parallel*100,1)+'%');
+      });
+      g('spBreak').innerHTML=bh;
+    }
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='spAdd'&&count<10){count++;renderRows();}
+      if(e.target.id==='spRem'&&count>2){count--;renderRows();}
+      if(e.target.id==='spCalc')calc();
+    });
+    g('pg').addEventListener('input',calc);
+    renderRows();calc();
+  }
+};
+ 
+// ── Electronics: Voltage Divider ─────────────────────────────────────────────
+CALCS['Voltage Divider']={
+  html:function(){return(
+    '<h1 class="pt">Voltage Divider</h1><p class="ps">Output voltage, current, and power dissipation</p>'+
+    '<div class="t2">'+
+    card('CIRCUIT VALUES',
+      '<div class="fr"><label>Input Voltage Vin (V)</label><input id="vdVin" type="number" value="12"></div>'+
+      '<div class="fr"><label>R1 (&#937;)</label><input id="vdR1" type="number" value="1000"></div>'+
+      '<div class="fr"><label>R2 (&#937;)</label><input id="vdR2" type="number" value="1000"></div>'+
+      '<div class="fr"><label>Load Resistance RL (&#937;, optional)</label><input id="vdRL" type="number" placeholder="leave blank = no load"></div>'+
+      '<div class="br"><button class="btn bc" id="vdCalc">Calculate</button>'+
+      '<button class="btn bs" id="vdClr">Clear</button></div>')+
+    card('RESULTS','<div id="vdRes"></div>')+
+    '</div>'+
+    '<div id="vdDiag" class="card" style="margin-top:14px;display:none">'+
+    '<div class="ch">CIRCUIT DIAGRAM</div>'+
+    '<div class="cb"><pre id="vdPre" style="font-size:12px;line-height:1.6;color:var(--tx);font-family:monospace"></pre></div></div>');},
+  init:function(){
+    function calc(){
+      var Vin=+gv('vdVin'),R1=+gv('vdR1'),R2=+gv('vdR2');
+      var RLstr=gv('vdRL'),RL=RLstr!==''?+RLstr:Infinity;
+      if(!Vin||!R1||!R2)return;
+      var R2eff=RL!==Infinity&&RL>0?R2*RL/(R2+RL):R2;
+      var Vout=Vin*R2eff/(R1+R2eff);
+      var I=Vin/(R1+R2eff);
+      var P1=I*I*R1,P2=I*I*R2,Ptot=P1+P2;
+      var PL=RL!==Infinity&&RL>0?Vout*Vout/RL:0;
+      g('vdRes').innerHTML=
+        rr('Output Voltage Vout',fmtN(Vout,4)+' V','a')+
+        rr('Current (main)',fmtN(I*1000,4)+' mA')+
+        rr('Power in R1',fmtN(P1*1000,4)+' mW')+
+        rr('Power in R2',fmtN(P2*1000,4)+' mW')+
+        (RL!==Infinity&&RL>0?rr('Power in Load',fmtN(PL*1000,4)+' mW'):'')+
+        rr('Total Power',fmtN(Ptot*1000,4)+' mW')+
+        rr('Division Ratio',fmtN(Vout/Vin*100,2)+'%');
+      // ASCII diagram
+      g('vdDiag').style.display='block';
+      var diag=
+        '  Vin = '+Vin+'V\n'+
+        '   |\n'+
+        '  [R1 = '+R1+'\u03a9] P='+fmtN(P1*1000,2)+'mW\n'+
+        '   |_____ Vout = '+fmtN(Vout,3)+'V'+(RL!==Infinity?' \u2192 [RL='+RL+'\u03a9]':'')+'\n'+
+        '  [R2 = '+R2+'\u03a9] P='+fmtN(P2*1000,2)+'mW\n'+
+        '   |\n'+
+        '  GND';
+      g('vdPre').textContent=diag;
+    }
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='vdCalc')calc();
+      if(e.target.id==='vdClr'){['vdVin','vdR1','vdR2','vdRL'].forEach(function(id){g(id).value='';});g('vdDiag').style.display='none';}
+    });
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Medical: Body Surface Area ───────────────────────────────────────────────
+CALCS['Body Surface Area']={
+  html:function(){return(
+    '<h1 class="pt">Body Surface Area</h1><p class="ps">Multiple validated formulas &mdash; for clinical reference only</p>'+
+    '<div class="t2">'+
+    card('MEASUREMENTS',
+      '<div class="fr"><label>Units</label>'+
+      '<select id="bsaU"><option value="imp">Imperial (lbs / in)</option><option value="met">Metric (kg / cm)</option></select></div>'+
+      '<div id="bsaFl"></div>'+
+      '<div class="br"><button class="btn bc" id="bsaCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="bsaRes"></div>')+
+    '</div>');},
+  init:function(){
+    function renderF(){
+      var m=gv('bsaU')==='met';
+      g('bsaFl').innerHTML=m?
+        '<div class="fr"><label>Weight (kg)</label><input id="bsaWt" type="number" placeholder="70"></div>'+
+        '<div class="fr"><label>Height (cm)</label><input id="bsaHt" type="number" placeholder="170"></div>':
+        '<div class="fr"><label>Weight (lbs)</label><input id="bsaLb" type="number" placeholder="154"></div>'+
+        '<div class="fr"><label>Height (in)</label><input id="bsaIn" type="number" placeholder="67"></div>';
+    }
+    function calc(){
+      var wKg,hCm;
+      if(gv('bsaU')==='met'){wKg=+gv('bsaWt');hCm=+gv('bsaHt');}
+      else{wKg=+gv('bsaLb')*0.453592;hCm=+gv('bsaIn')*2.54;}
+      if(!wKg||!hCm)return;
+      var most=Math.sqrt(hCm*wKg/3600);
+      var du=0.007184*Math.pow(hCm,0.725)*Math.pow(wKg,0.425);
+      var hay=0.024265*Math.pow(hCm,0.3964)*Math.pow(wKg,0.5378);
+      var boyd=0.0003207*Math.pow(hCm,0.3)*Math.pow(wKg*1000,0.7285-0.0188*Math.log10(wKg*1000));
+      g('bsaRes').innerHTML=
+        rr('Mosteller (standard)',fmtN(most,4)+' m\u00b2','a')+
+        rr('DuBois & DuBois',fmtN(du,4)+' m\u00b2')+
+        rr('Haycock',fmtN(hay,4)+' m\u00b2')+
+        rr('Boyd',fmtN(boyd,4)+' m\u00b2')+
+        '<div style="font-size:11px;color:var(--mu);margin-top:8px;padding-top:8px;border-top:1px solid var(--bd)">'+
+        'Input: '+fmtN(wKg,1)+' kg / '+fmtN(hCm,1)+' cm</div>';
+    }
+    g('pg').addEventListener('change',function(e){if(e.target.id==='bsaU')renderF();});
+    g('pg').addEventListener('click',function(e){if(e.target.id==='bsaCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    renderF();
+  }
+};
+ 
+// ── Medical: Drug Dosage ─────────────────────────────────────────────────────
+CALCS['Drug Dosage']={
+  html:function(){return(
+    '<h1 class="pt">Drug Dosage Calculator</h1><p class="ps">Weight-based dosing &mdash; for reference only, verify with a pharmacist</p>'+
+    '<div class="t2">'+
+    card('PATIENT &amp; DRUG',
+      '<div class="fr"><label>Patient Weight</label>'+
+      '<div style="display:flex;gap:6px;flex:1"><input id="ddWt" type="number" value="70" style="flex:1">'+
+      '<select id="ddWtU" style="width:80px"><option>kg</option><option>lbs</option></select></div></div>'+
+      '<div class="fr"><label>Dose (mg/kg)</label><input id="ddDose" type="number" value="5" step="0.1"></div>'+
+      '<div class="fr"><label>Frequency</label>'+
+      '<select id="ddFreq"><option value="1">Once daily</option><option value="2">Twice daily (BID)</option>'+
+      '<option value="3">Three times daily (TID)</option><option value="4">Four times daily (QID)</option>'+
+      '<option value="6">Every 6 hours</option><option value="8">Every 8 hours</option></select></div>'+
+      '<div class="fr"><label>Available Concentration (mg/ml)</label><input id="ddConc" type="number" value="10" step="0.1"></div>'+
+      '<div class="br"><button class="btn bc" id="ddCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="ddRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var wtRaw=+gv('ddWt'),unit=gv('ddWtU');
+      var wt=unit==='lbs'?wtRaw*0.453592:wtRaw;
+      var dose=+gv('ddDose'),freq=+gv('ddFreq'),conc=+gv('ddConc');
+      if(!wt||!dose||!freq)return;
+      var perDose=wt*dose,daily=perDose*freq,volPerDose=conc>0?perDose/conc:0,volDaily=conc>0?daily/conc:0;
+      g('ddRes').innerHTML=
+        rr('Weight (kg)',fmtN(wt,2)+' kg')+
+        rr('Dose per Administration',fmtN(perDose,2)+' mg','a')+
+        rr('Total Daily Dose',fmtN(daily,2)+' mg')+
+        (conc>0?rr('Volume per Dose',fmtN(volPerDose,2)+' ml'):'')+
+        (conc>0?rr('Volume per Day',fmtN(volDaily,2)+' ml'):'')+
+        rr('Frequency',freq+'x daily');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ddCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Medical: IV Drip Rate ─────────────────────────────────────────────────────
+CALCS['IV Drip Rate']={
+  html:function(){return(
+    '<h1 class="pt">IV Drip Rate</h1><p class="ps">Drops per minute and infusion rate calculations</p>'+
+    '<div class="t2">'+
+    card('INFUSION DETAILS',
+      '<div class="fr"><label>Volume to Infuse (ml)</label><input id="ivVol" type="number" value="1000"></div>'+
+      '<div class="fr"><label>Infusion Time (hours)</label><input id="ivHrs" type="number" value="8" step="0.5"></div>'+
+      '<div class="fr"><label>Drop Factor (drops/ml)</label>'+
+      '<select id="ivDrop"><option value="10">10 (standard)</option><option value="15">15 (standard)</option>'+
+      '<option value="20">20 (standard)</option><option value="60">60 (microdrip)</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="ivCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="ivRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var vol=+gv('ivVol'),hrs=+gv('ivHrs'),drop=+gv('ivDrop');
+      if(!vol||!hrs||!drop)return;
+      var mlPerHr=vol/hrs,mlPerMin=mlPerHr/60,dropsPerMin=mlPerMin*drop;
+      g('ivRes').innerHTML=
+        rr('Drops per Minute',fmtN(dropsPerMin,1)+' gtts/min','a')+
+        rr('mL per Hour',fmtN(mlPerHr,1)+' ml/hr')+
+        rr('mL per Minute',fmtN(mlPerMin,2)+' ml/min')+
+        rr('Total Drops',fmtN(vol*drop,0))+
+        rr('Infusion Complete',hrs+' hr ('+(hrs>=1?Math.floor(hrs)+'h ':'')+Math.round((hrs%1)*60)+'m)');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ivCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Medical: Opioid Conversion ────────────────────────────────────────────────
+CALCS['Opioid Conversion']={
+  html:function(){return(
+    '<h1 class="pt">Opioid Conversion (MME)</h1>'+
+    '<p class="ps">Morphine Milligram Equivalents &mdash; for clinical reference only. Always verify with a pharmacist or prescriber.</p>'+
+    '<div class="t2">'+
+    card('CURRENT OPIOID',
+      '<div class="fr"><label>Opioid</label>'+
+      '<select id="ocDrug">'+
+      '<option value="1">Morphine oral (1 MME/mg)</option>'+
+      '<option value="1.5">Oxycodone oral (1.5 MME/mg)</option>'+
+      '<option value="1">Hydrocodone oral (1 MME/mg)</option>'+
+      '<option value="0.15">Codeine oral (0.15 MME/mg)</option>'+
+      '<option value="4">Hydromorphone oral (4 MME/mg)</option>'+
+      '<option value="0.1">Tramadol oral (0.1 MME/mg)</option>'+
+      '<option value="2.4">Fentanyl patch (2.4 MME/mcg/hr)</option>'+
+      '</select></div>'+
+      '<div class="fr"><label>Daily Dose (mg, or mcg/hr for patch)</label><input id="ocDose" type="number" value="30"></div>'+
+      '<div class="br"><button class="btn bc" id="ocCalc">Calculate MME</button></div>')+
+    card('MME &amp; EQUIVALENTS','<div id="ocRes"></div>')+
+    '</div>'+
+    card('COMMON OPIOID CONVERSION REFERENCE',
+      '<div id="ocRef"></div>'+
+      '<div style="font-size:11px;color:var(--mu);margin-top:8px">&#9888;&#65039; CDC guidelines: &gt;90 MME/day requires careful risk assessment. This tool is for informational purposes only.</div>'));},
+  init:function(){
+    var EQ=[
+      ['Morphine oral',1,'mg'],['Oxycodone oral',1.5,'mg'],['Hydrocodone oral',1,'mg'],
+      ['Codeine oral',0.15,'mg'],['Hydromorphone oral',4,'mg'],['Tramadol oral',0.1,'mg'],
+      ['Fentanyl patch',2.4,'mcg/hr']
+    ];
+    function calc(){
+      var factor=+gv('ocDrug'),dose=+gv('ocDose');
+      if(!dose)return;
+      var mme=dose*factor;
+      var risk=mme<50?'Low':mme<90?'Moderate':'High &mdash; CDC review recommended';
+      var riskColor=mme<50?'var(--ok)':mme<90?'#F59E0B':'#C53030';
+      g('ocRes').innerHTML=
+        rr('Total Daily MME',fmtN(mme,1)+' MME/day','a')+
+        '<div style="font-size:12px;font-weight:700;color:'+riskColor+';padding:8px 0">Risk Level: '+risk+'</div>'+
+        '<div style="font-size:11px;color:var(--mu)">Equivalents at this MME:</div>';
+      EQ.forEach(function(e){
+        var eqDose=mme/e[1];
+        g('ocRes').innerHTML+=rr(e[0],fmtN(eqDose,2)+' '+e[2]+'/day');
+      });
+      var ref='';
+      EQ.forEach(function(e){ref+=rr(e[0],'Factor: '+e[1]+' MME/'+e[2]);});
+      g('ocRef').innerHTML=ref;
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ocCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Medical: Pharmacy Dilution ────────────────────────────────────────────────
+CALCS['Pharmacy Dilution']={
+  html:function(){return(
+    '<h1 class="pt">Pharmacy Dilution</h1><p class="ps">C&#x2081;V&#x2081; = C&#x2082;V&#x2082; &mdash; solve for any unknown</p>'+
+    '<div class="t2">'+
+    card('DILUTION EQUATION',
+      '<p style="font-size:12px;color:var(--mu);margin-bottom:12px">Leave one field blank &mdash; it will be calculated.</p>'+
+      '<div class="fr"><label>C&#x2081; Initial Concentration</label><input id="dlC1" type="number" placeholder="e.g. 10" value="10"></div>'+
+      '<div class="fr"><label>V&#x2081; Initial Volume (ml)</label><input id="dlV1" type="number" placeholder="e.g. 50"></div>'+
+      '<div class="fr"><label>C&#x2082; Final Concentration</label><input id="dlC2" type="number" placeholder="e.g. 2"></div>'+
+      '<div class="fr"><label>V&#x2082; Final Volume (ml)</label><input id="dlV2" type="number" placeholder="e.g. 250"></div>'+
+      '<div class="br"><button class="btn bc" id="dlCalc">Solve</button>'+
+      '<button class="btn bs" id="dlClr">Clear</button></div>')+
+    card('RESULTS','<div id="dlRes"></div>')+
+    '</div>'+
+    card('DILUENT VOLUME',
+      '<div id="dlDil"></div>'));},
+  init:function(){
+    function n(id){var v=gv(id);return v!==''?+v:null;}
+    function calc(){
+      var C1=n('dlC1'),V1=n('dlV1'),C2=n('dlC2'),V2=n('dlV2');
+      var blanks=[C1,V1,C2,V2].filter(function(x){return x===null;}).length;
+      if(blanks!==1){g('dlRes').innerHTML='<div style="color:var(--mu)">Leave exactly one field blank to solve.</div>';return;}
+      if(C1===null)C1=C2*V2/V1;
+      else if(V1===null)V1=C2*V2/C1;
+      else if(C2===null)C2=C1*V1/V2;
+      else V2=C1*V1/C2;
+      if(C2>C1){g('dlRes').innerHTML='<div style="color:#C53030">Final concentration cannot exceed initial concentration.</div>';return;}
+      var diluent=V2-V1;
+      g('dlRes').innerHTML=
+        rr('C\u2081',fmtN(C1,4)+' (initial)')+
+        rr('V\u2081',fmtN(V1,2)+' ml (stock)')+
+        rr('C\u2082',fmtN(C2,4)+' (final)','a')+
+        rr('V\u2082',fmtN(V2,2)+' ml (final)','a');
+      g('dlDil').innerHTML=
+        rr('Diluent to Add',fmtN(diluent,2)+' ml','a')+
+        rr('Dilution Factor',fmtN(C1/C2,2)+'x')+
+        rr('Method','Take '+fmtN(V1,2)+' ml of stock, add '+fmtN(diluent,2)+' ml diluent');
+    }
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='dlCalc')calc();
+      if(e.target.id==='dlClr'){['dlC1','dlV1','dlC2','dlV2'].forEach(function(id){g(id).value='';});g('dlRes').innerHTML='';g('dlDil').innerHTML='';}
+    });
+  }
+};
+ 
+// ── IT: Binary to Hex ─────────────────────────────────────────────────────────
+CALCS['Binary to Hex']={
+  html:function(){return(
+    '<h1 class="pt">Binary / Hex / Decimal Converter</h1><p class="ps">Convert between number bases instantly</p>'+
+    '<div class="t2">'+
+    card('INPUT',
+      '<div class="fr"><label>Decimal</label><input id="bhDec" type="number" placeholder="0 \u2013 4294967295" min="0"></div>'+
+      '<div class="fr"><label>Binary</label><input id="bhBin" type="text" placeholder="e.g. 11001010" style="font-family:monospace"></div>'+
+      '<div class="fr"><label>Hexadecimal</label><input id="bhHex" type="text" placeholder="e.g. CA" style="font-family:monospace"></div>'+
+      '<div class="fr"><label>Octal</label><input id="bhOct" type="text" placeholder="e.g. 312" style="font-family:monospace"></div>')+
+    card('BIT BREAKDOWN','<div id="bhBits"></div>')+
+    '</div>');},
+  init:function(){
+    var busy=false;
+    function pad(s,n){while(s.length<n)s='0'+s;return s;}
+    function update(src,val){
+      if(busy||isNaN(val)||val<0||val>4294967295)return;
+      busy=true;
+      var v=Math.floor(val);
+      if(src!=='dec')g('bhDec').value=v;
+      if(src!=='bin')g('bhBin').value=v.toString(2);
+      if(src!=='hex')g('bhHex').value=v.toString(16).toUpperCase();
+      if(src!=='oct')g('bhOct').value=v.toString(8);
+      // bit breakdown
+      var b=pad(v.toString(2),8);var rows='';
+      var bytes=Math.max(1,Math.ceil(b.length/8));
+      b=pad(b,bytes*8);
+      rows='<div style="font-family:monospace;font-size:13px;line-height:2">';
+      for(var i=0;i<bytes;i++){
+        var byte=b.slice(i*8,(i+1)*8);
+        rows+='Byte '+(bytes-i)+': <span style="color:var(--ac)">'+byte+'</span> = '+parseInt(byte,2)+'<br>';
+      }
+      rows+='</div>';
+      g('bhBits').innerHTML=rows+
+        rr('Decimal',v.toLocaleString())+
+        rr('Hex','0x'+v.toString(16).toUpperCase())+
+        rr('Binary',b)+
+        rr('Bits required',v===0?1:v.toString(2).length);
+      busy=false;
+    }
+    g('pg').addEventListener('input',function(e){
+      var id=e.target.id,v=e.target.value.trim();
+      if(id==='bhDec')update('dec',parseInt(v)||0);
+      else if(id==='bhBin')update('bin',parseInt(v,2));
+      else if(id==='bhHex')update('hex',parseInt(v,16));
+      else if(id==='bhOct')update('oct',parseInt(v,8));
+    });
+    update('dec',202);
+  }
+};
+ 
+// ── IT: IP Converter ──────────────────────────────────────────────────────────
+CALCS['IP Converter']={
+  html:function(){return(
+    '<h1 class="pt">IP Address Converter</h1><p class="ps">Convert between dotted decimal, binary, and hexadecimal</p>'+
+    card('IP ADDRESS',
+      '<div class="fr"><label>Dotted Decimal</label><input id="ipDec" type="text" value="192.168.1.100" placeholder="e.g. 192.168.1.1"></div>'+
+      '<div class="br"><button class="btn bc" id="ipCalc">Convert</button></div>')+
+    '<div id="ipRes"></div>');},
+  init:function(){
+    function calc(){
+      var ip=gv('ipDec').trim();
+      var parts=ip.split('.');
+      if(parts.length!==4)return;
+      var octs=parts.map(Number);
+      if(octs.some(function(o){return isNaN(o)||o<0||o>255;}))return;
+      var num=(((octs[0]*256+octs[1])*256+octs[2])*256+octs[3])>>>0;
+      function pad8(n){var s=n.toString(2);while(s.length<8)s='0'+s;return s;}
+      var binParts=octs.map(pad8);
+      var hexParts=octs.map(function(o){return ('0'+o.toString(16).toUpperCase()).slice(-2);});
+      g('ipRes').innerHTML=
+        '<div class="card"><div class="cb">'+
+        rr('Dotted Decimal',ip)+
+        rr('Binary',binParts.join('.'))+
+        rr('Hex','0x'+hexParts.join('')+' ('+hexParts.join('.')+')')+
+        rr('Decimal (32-bit)',num.toLocaleString())+
+        rr('Reverse DNS',octs.slice().reverse().join('.')+'.in-addr.arpa')+
+        '<div style="margin-top:12px;font-size:11px;font-weight:700;color:var(--mu)">OCTET BREAKDOWN</div>'+
+        octs.map(function(o,i){return rr('Octet '+(i+1)+' = '+o,pad8(o)+' (0x'+('0'+o.toString(16).toUpperCase()).slice(-2)+')'  );}).join('')+
+        '</div></div>';
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ipCalc')calc();});
+    g('pg').addEventListener('keydown',function(e){if(e.key==='Enter')calc();});
+    calc();
+  }
+};
+ 
+// ── IT: IPv6 Calculator ───────────────────────────────────────────────────────
+CALCS['IPv6 Calculator']={
+  html:function(){return(
+    '<h1 class="pt">IPv6 Calculator</h1><p class="ps">Expand, compress, and analyze IPv6 addresses</p>'+
+    card('IPv6 ADDRESS',
+      '<div class="fr"><label>IPv6 Address</label><input id="v6In" type="text" value="2001:db8::1" placeholder="e.g. 2001:db8::1" style="font-family:monospace"></div>'+
+      '<div class="br"><button class="btn bc" id="v6Calc">Analyze</button>'+
+      '<button class="btn bs" id="v6Loopback">::1 (loopback)</button>'+
+      '<button class="btn bs" id="v6Link">fe80::1 (link-local)</button></div>')+
+    '<div id="v6Res"></div>');},
+  init:function(){
+    function expand(addr){
+      // Handle :: expansion
+      if(addr.indexOf('::')>=0){
+        var sides=addr.split('::');
+        var left=sides[0]?sides[0].split(':'):[];
+        var right=sides[1]?sides[1].split(':'):[];
+        var missing=8-left.length-right.length;
+        var middle=[];for(var i=0;i<missing;i++)middle.push('0000');
+        var all=left.concat(middle,right);
+        return all.map(function(g){return ('0000'+g).slice(-4);}).join(':');
+      }
+      return addr.split(':').map(function(g){return ('0000'+g).slice(-4);}).join(':');
+    }
+    function compress(full){
+      // Remove leading zeros
+      var groups=full.split(':').map(function(g){return parseInt(g,16).toString(16);});
+      // Find longest run of zeros
+      var best={start:-1,len:0},cur={start:-1,len:0};
+      groups.forEach(function(g,i){
+        if(g==='0'){if(cur.start<0)cur.start=i;cur.len++;if(cur.len>best.len){best={start:cur.start,len:cur.len};}}
+        else{cur={start:-1,len:0};}
+      });
+      if(best.len>1){
+        var before=groups.slice(0,best.start).join(':');
+        var after=groups.slice(best.start+best.len).join(':');
+        return (before?before+'::':'::')+after;
+      }
+      return groups.join(':');
+    }
+    function getType(full){
+      var g=full.split(':');
+      if(full==='0000:0000:0000:0000:0000:0000:0000:0001')return 'Loopback (::1)';
+      if(g[0]==='fe80')return 'Link-Local';
+      if(g[0]==='fc00'||g[0]==='fd00')return 'Unique Local (ULA)';
+      if(g[0]==='2001'&&g[1]==='0db8')return 'Documentation (2001:db8::/32)';
+      if(g[0]==='ff00'||g[0].slice(0,2)==='ff')return 'Multicast';
+      if(g[0]==='2001')return 'Global Unicast';
+      return 'Unknown / Unspecified';
+    }
+    function calc(){
+      var addr=gv('v6In').trim().toLowerCase();
+      try{
+        var full=expand(addr);
+        var parts=full.split(':');
+        if(parts.length!==8||parts.some(function(p){return p.length!==4||isNaN(parseInt(p,16));})){
+          g('v6Res').innerHTML='<div style="color:#C53030">Invalid IPv6 address</div>';return;
+        }
+        var comp=compress(full);
+        var binStr=parts.map(function(p){return ('0000000000000000'+parseInt(p,16).toString(2)).slice(-16);}).join('');
+        g('v6Res').innerHTML=
+          '<div class="card"><div class="cb">'+
+          rr('Expanded',full,'a')+
+          rr('Compressed',comp,'a')+
+          rr('Address Type',getType(full))+
+          rr('Total Bits','128')+
+          rr('Hex (no colons)',parts.join('').toUpperCase())+
+          '</div></div>';
+      }catch(e){g('v6Res').innerHTML='<div style="color:#C53030">Invalid address: '+e.message+'</div>';}
+    }
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='v6Calc')calc();
+      if(e.target.id==='v6Loopback'){g('v6In').value='::1';calc();}
+      if(e.target.id==='v6Link'){g('v6In').value='fe80::1';calc();}
+    });
+    g('pg').addEventListener('keydown',function(e){if(e.key==='Enter')calc();});
+    calc();
+  }
+};
+ 
+// ── IT: Subnet Cheat Sheet ────────────────────────────────────────────────────
+CALCS['Subnet Cheat Sheet']={
+  html:function(){return(
+    '<h1 class="pt">Subnet Cheat Sheet</h1><p class="ps">Quick reference for all IPv4 CIDR prefixes</p>'+
+    card('FILTER',
+      '<div class="fr"><label>Show prefixes from /</label>'+
+      '<input id="scFrom" type="number" value="16" min="0" max="32" style="width:80px">'+
+      '<label style="min-width:auto;margin-left:8px">to /</label>'+
+      '<input id="scTo" type="number" value="32" min="0" max="32" style="width:80px">'+
+      '</div>'+
+      '<div class="br"><button class="btn bc" id="scShow">Show</button>'+
+      '<button class="btn bs" id="scAll">All (/0\u2013/32)</button></div>')+
+    '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:14px">'+
+    '<thead><tr style="background:var(--nb);color:#fff">'+
+    '<th style="padding:8px 10px;text-align:left">CIDR</th>'+
+    '<th style="padding:8px 10px;text-align:left">Subnet Mask</th>'+
+    '<th style="padding:8px 10px;text-align:right">Usable Hosts</th>'+
+    '<th style="padding:8px 10px;text-align:right">Total IPs</th>'+
+    '<th style="padding:8px 10px;text-align:right">Subnets of /24</th>'+
+    '</tr></thead><tbody id="scBody"></tbody></table></div>');},
+  init:function(){
+    function toMask(p){return [((-1<<(32-p))>>>24)&255,((-1<<(32-p))>>>16)&255,((-1<<(32-p))>>>8)&255,(-1<<(32-p))&255].join('.');}
+    function render(from,to){
+      var rows='';
+      for(var p=from;p<=to;p++){
+        var total=p===0?Math.pow(2,32):Math.pow(2,32-p);
+        var hosts=p>=31?Math.max(0,total-2):total-2;
+        var sub24=p<24?Math.pow(2,24-p):1/Math.pow(2,p-24);
+        var bg=p%2===0?'background:var(--bg)':'';
+        rows+='<tr style="'+bg+'">'+
+          '<td style="padding:6px 10px;font-weight:700;color:var(--ac)">/'+p+'</td>'+
+          '<td style="padding:6px 10px;font-family:monospace">'+toMask(p)+'</td>'+
+          '<td style="padding:6px 10px;text-align:right">'+(p>=32?0:hosts.toLocaleString())+'</td>'+
+          '<td style="padding:6px 10px;text-align:right">'+(p===0?'4.3B':total>=1e9?fmtN(total/1e9,1)+'B':total>=1e6?fmtN(total/1e6,1)+'M':total>=1000?fmtN(total/1000,1)+'K':total)+'</td>'+
+          '<td style="padding:6px 10px;text-align:right">'+(sub24>=1?sub24.toLocaleString():'1/'+Math.round(1/sub24))+'</td>'+
+          '</tr>';
+      }
+      g('scBody').innerHTML=rows;
+    }
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='scShow')render(+gv('scFrom'),+gv('scTo'));
+      if(e.target.id==='scAll'){g('scFrom').value='0';g('scTo').value='32';render(0,32);}
+    });
+    render(16,32);
+  }
+};
+ 
+// ── IT: Supernet ──────────────────────────────────────────────────────────────
+CALCS['Supernet']={
+  html:function(){return(
+    '<h1 class="pt">Supernet Calculator</h1><p class="ps">Find the smallest supernet containing two or more networks</p>'+
+    '<div class="t2">'+
+    card('NETWORKS TO COMBINE',
+      '<p style="font-size:12px;color:var(--mu);margin-bottom:10px">Enter networks in CIDR notation, one per line.</p>'+
+      '<textarea id="snNets" rows="5" style="font-family:monospace;font-size:13px" placeholder="192.168.1.0/24\n192.168.2.0/24\n192.168.3.0/24"></textarea>'+
+      '<div class="br"><button class="btn bc" id="snCalc">Calculate Supernet</button></div>')+
+    card('RESULTS','<div id="snRes"><div class="rr"><span class="rl">Enter networks above</span></div></div>')+
+    '</div>');},
+  init:function(){
+    function ipToNum(ip){
+      var p=ip.split('.').map(Number);
+      return(((p[0]*256+p[1])*256+p[2])*256+p[3])>>>0;
+    }
+    function numToIp(n){return[(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');}
+    function calc(){
+      var lines=gv('snNets').trim().split('\n').map(function(l){return l.trim();}).filter(function(l){return l;});
+      if(lines.length<2){g('snRes').innerHTML='<div style="color:var(--mu)">Enter at least 2 networks.</div>';return;}
+      var nets=[];
+      for(var i=0;i<lines.length;i++){
+        var parts=lines[i].split('/');
+        if(parts.length!==2){g('snRes').innerHTML='<div style="color:#C53030">Invalid: '+lines[i]+'</div>';return;}
+        var prefix=parseInt(parts[1]);
+        var mask=(prefix===0?0:((-1)<<(32-prefix)))>>>0;
+        var net=(ipToNum(parts[0].trim())&mask)>>>0;
+        nets.push({net:net,prefix:prefix,orig:lines[i]});
+      }
+      // Find supernet: common prefix of all network addresses
+      var bits=32;
+      for(var i=1;i<nets.length;i++){
+        var xor=nets[0].net^nets[i].net;
+        var common=0;
+        for(var b=31;b>=0;b--){if(xor>>>(b)&1){common=31-b;break;}else if(b===0)common=32;}
+        bits=Math.min(bits,common,nets[0].prefix,nets[i].prefix);
+      }
+      var superMask=(bits===0?0:((-1)<<(32-bits)))>>>0;
+      var superNet=(nets[0].net&superMask)>>>0;
+      var total=Math.pow(2,32-bits);
+      g('snRes').innerHTML=
+        rr('Supernet',numToIp(superNet)+'/'+bits,'a')+
+        rr('Subnet Mask',numToIp(superMask))+
+        rr('Network Address',numToIp(superNet))+
+        rr('Broadcast',numToIp((superNet|(~superMask>>>0))>>>0))+
+        rr('Total IPs',total.toLocaleString())+
+        rr('Contains',nets.length+' networks');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='snCalc')calc();});
+  }
+};
+ 
+// ── Construction: Batten Spacing ─────────────────────────────────────────────
+CALCS['Batten Spacing']={
+  html:function(){return(
+    '<h1 class="pt">Batten Spacing Calculator</h1><p class="ps">Even spacing for battens, slats, or pickets</p>'+
+    '<div class="t2">'+
+    card('DIMENSIONS',
+      '<div class="fr"><label>Total Span (inches)</label><input id="btSpan" type="number" value="96"></div>'+
+      '<div class="fr"><label>Batten Width (inches)</label><input id="btW" type="number" value="1.5"></div>'+
+      '<div class="fr"><label>Number of Battens</label><input id="btN" type="number" value="6"></div>'+
+      '<div class="br"><button class="btn bc" id="btCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="btRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var span=+gv('btSpan'),w=+gv('btW'),n=+gv('btN');
+      if(!span||!n)return;
+      var totalBatten=w*n,totalGap=span-totalBatten,gap=totalGap/(n+1);
+      if(gap<0){g('btRes').innerHTML='<div style="color:#C53030">Battens too wide for the span.</div>';return;}
+      g('btRes').innerHTML=
+        rr('Gap Between Battens',fmtN(gap,4)+'" ('+fmtN(gap,2)+'"  each)','a')+
+        rr('First Batten Start',fmtN(gap,4)+'" from edge')+
+        rr('Total Batten Coverage',fmtN(totalBatten,2)+'"')+
+        rr('Total Gap Coverage',fmtN(totalGap,2)+'"')+
+        rr('Coverage %',fmtN(totalBatten/span*100,1)+'% solid');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='btCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Concrete Volume ─────────────────────────────────────────────
+CALCS['Concrete Volume']={
+  html:function(){return(
+    '<h1 class="pt">Concrete Volume Calculator</h1><p class="ps">Slabs, footings, columns &mdash; cubic yards and bags</p>'+
+    '<div class="t2">'+
+    card('POUR DETAILS',
+      '<div class="fr"><label>Shape</label>'+
+      '<select id="cvSh"><option value="slab">Slab / Footing</option>'+
+      '<option value="col">Round Column</option><option value="tube">Round Tube Footing</option></select></div>'+
+      '<div id="cvFl"></div>'+
+      '<div class="fr"><label>Bag Size</label>'+
+      '<select id="cvBag"><option value="60">60 lb bag</option><option value="80">80 lb bag</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="cvCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="cvRes"></div>')+
+    '</div>');},
+  init:function(){
+    var shapes={
+      slab:[['Length (ft)','cvL'],['Width (ft)','cvW'],['Thickness (in)','cvT']],
+      col:[['Diameter (in)','cvD'],['Height (ft)','cvH']],
+      tube:[['Diameter (in)','cvD2'],['Depth (ft)','cvDp']]
+    };
+    function renderF(){
+      var sh=gv('cvSh');
+      g('cvFl').innerHTML=shapes[sh].map(function(f){
+        return '<div class="fr"><label>'+f[0]+'</label><input id="'+f[1]+'" type="number" placeholder="0"></div>';
+      }).join('');
+    }
+    function calc(){
+      var sh=gv('cvSh'),bagSz=+gv('cvBag'),ft3;
+      try{
+        if(sh==='slab'){ft3=+gv('cvL')*+gv('cvW')*(+gv('cvT')/12);}
+        else if(sh==='col'){var r=+gv('cvD')/2/12;ft3=Math.PI*r*r*+gv('cvH');}
+        else{var r2=+gv('cvD2')/2/12;ft3=Math.PI*r2*r2*+gv('cvDp');}
+      }catch(e){return;}
+      if(!ft3||ft3<=0)return;
+      var yd3=ft3/27,bags=Math.ceil(yd3/(bagSz===60?0.45:0.6)*27);
+      g('cvRes').innerHTML=
+        rr('Cubic Feet',fmtN(ft3,2)+' ft\u00b3')+
+        rr('Cubic Yards',fmtN(yd3,3)+' yd\u00b3','a')+
+        rr('Bags Needed ('+bagSz+'lb)',bags+' bags')+
+        rr('Add 10% Waste',Math.ceil(bags*1.1)+' bags recommended');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='cvCalc')calc();});
+    g('pg').addEventListener('change',function(e){if(e.target.id==='cvSh')renderF();});
+    g('pg').addEventListener('input',calc);
+    renderF();
+  }
+};
+ 
+// ── Construction: Corner Angle ────────────────────────────────────────────────
+CALCS['Corner Angle']={
+  html:function(){return(
+    '<h1 class="pt">Corner Angle Calculator</h1><p class="ps">Miter cuts for any corner angle</p>'+
+    '<div class="t2">'+
+    card('CORNER',
+      '<div class="fr"><label>Corner Angle (degrees)</label><input id="caA" type="number" value="90" step="0.5"></div>'+
+      '<div class="fr"><label>Number of Sides (polygon)</label>'+
+      '<select id="caSides"><option value="0">Custom angle above</option>'+
+      '<option value="3">Triangle (3)</option><option value="4">Square (4)</option>'+
+      '<option value="5">Pentagon (5)</option><option value="6">Hexagon (6)</option>'+
+      '<option value="8">Octagon (8)</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="caCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="caRes"></div>')+
+    '</div>');},
+  init:function(){
+    g('pg').addEventListener('change',function(e){
+      if(e.target.id==='caSides'){
+        var n=+gv('caSides');
+        if(n>0)g('caA').value=fmtN((n-2)*180/n,2);
+      }
+    });
+    g('pg').addEventListener('click',function(e){if(e.target.id==='caCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    function calc(){
+      var ang=+gv('caA');if(!ang)return;
+      var miter=ang/2,outside=180-ang,outsideMiter=(180-ang)/2;
+      g('caRes').innerHTML=
+        rr('Corner Angle',fmtN(ang,2)+'\u00b0')+
+        rr('Miter Cut (inside)',fmtN(miter,2)+'\u00b0 each piece','a')+
+        rr('Outside Corner',fmtN(outside,2)+'\u00b0')+
+        rr('Miter Cut (outside)',fmtN(outsideMiter,2)+'\u00b0 each piece')+
+        rr('Complementary',fmtN(90-miter,2)+'\u00b0 (saw setting for inside)');
+    }
+    calc();
+  }
+};
+ 
+// ── Construction: Crown Molding ───────────────────────────────────────────────
+CALCS['Crown Molding']={
+  html:function(){return(
+    '<h1 class="pt">Crown Molding Calculator</h1><p class="ps">Miter and bevel angles for perfect crown joints</p>'+
+    '<div class="t2">'+
+    card('MOLDING DETAILS',
+      '<div class="fr"><label>Corner Angle (degrees)</label><input id="cmCorner" type="number" value="90" step="0.5"></div>'+
+      '<div class="fr"><label>Spring Angle</label>'+
+      '<select id="cmSpring"><option value="38">38\u00b0 (common)</option>'+
+      '<option value="45">45\u00b0 (equal spring)</option>'+
+      '<option value="52">52\u00b0</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="cmCalc">Calculate</button></div>')+
+    card('CUT ANGLES','<div id="cmRes"></div>')+
+    '</div>'+
+    card('NOTES',
+      '<div style="font-size:12px;color:var(--mu);line-height:1.8">'+
+      '<b>Inside corner:</b> hold molding flat on saw table, set miter &amp; bevel as shown.<br>'+
+      '<b>Outside corner:</b> reverse the miter direction for each piece.<br>'+
+      '<b>Spring angle</b> = angle the molding makes with the wall.</div>'));},
+  init:function(){
+    function calc(){
+      var corner=+gv('cmCorner'),spring=+gv('cmSpring');
+      if(!corner||!spring)return;
+      var halfCorner=(180-corner)/2*Math.PI/180;
+      var sp=spring*Math.PI/180;
+      var miter=Math.atan(Math.cos(sp)*Math.tan(halfCorner))*180/Math.PI;
+      var bevel=Math.asin(Math.sin(halfCorner)*Math.sin(sp))*180/Math.PI;
+      g('cmRes').innerHTML=
+        rr('Miter Angle',fmtN(miter,2)+'\u00b0','a')+
+        rr('Bevel Angle',fmtN(bevel,2)+'\u00b0','a')+
+        rr('Spring Angle',spring+'\u00b0')+
+        rr('Corner Angle',corner+'\u00b0')+
+        rr('Flat Ceiling Angle',fmtN(90-spring,2)+'\u00b0');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='cmCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Decking ─────────────────────────────────────────────────────
+CALCS['Decking']={
+  html:function(){return(
+    '<h1 class="pt">Decking Calculator</h1><p class="ps">Boards, linear feet, and cost estimate</p>'+
+    '<div class="t2">'+
+    card('DECK DETAILS',
+      '<div class="fr"><label>Deck Length (ft)</label><input id="dkL" type="number" value="16"></div>'+
+      '<div class="fr"><label>Deck Width (ft)</label><input id="dkW" type="number" value="12"></div>'+
+      '<div class="fr"><label>Board Width (actual, in)</label><input id="dkBW" type="number" value="5.5"></div>'+
+      '<div class="fr"><label>Gap Between Boards (in)</label><input id="dkGap" type="number" value="0.25" step="0.05"></div>'+
+      '<div class="fr"><label>Board Length (ft)</label><input id="dkBL" type="number" value="16"></div>'+
+      '<div class="fr"><label>Waste Factor (%)</label><input id="dkWaste" type="number" value="10"></div>'+
+      '<div class="fr"><label>Cost per Linear Ft ($)</label><input id="dkCost" type="number" value="0" step="0.01"></div>'+
+      '<div class="br"><button class="btn bc" id="dkCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="dkRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var L=+gv('dkL'),W=+gv('dkW'),bw=+gv('dkBW'),gap=+gv('dkGap'),bl=+gv('dkBL'),waste=+gv('dkWaste'),cost=+gv('dkCost');
+      if(!L||!W||!bw||!bl)return;
+      var deckArea=L*W;
+      var boardsNeeded=Math.ceil(W*12/(bw+gap));
+      var linearFt=boardsNeeded*bl;
+      var withWaste=Math.ceil(linearFt*(1+waste/100));
+      var boardCount=Math.ceil(withWaste/bl);
+      var coverageW=boardsNeeded*(bw/12);
+      g('dkRes').innerHTML=
+        rr('Deck Area',fmtN(deckArea,1)+' sq ft')+
+        rr('Boards Needed',boardsNeeded+' boards ('+bl+"' lengths)",'a')+
+        rr('Linear Feet',fmtN(linearFt,1)+' lf')+
+        rr('With '+waste+'% Waste',boardCount+' boards ('+fmtN(withWaste,1)+' lf)','a')+
+        rr('Actual Coverage',fmtN(coverageW,2)+"' wide")+
+        (cost>0?rr('Estimated Cost',fmtM(withWaste*cost)):''  );
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='dkCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Diagonal ────────────────────────────────────────────────────
+CALCS['Diagonal']={
+  html:function(){return(
+    '<h1 class="pt">Diagonal Calculator</h1><p class="ps">Diagonal length, angle, and 3-4-5 squaring check</p>'+
+    '<div class="t2">'+
+    card('DIMENSIONS',
+      '<div class="fr"><label>Length (ft)</label><input id="dgL" type="number" value="12"></div>'+
+      '<div class="fr"><label>Width (ft)</label><input id="dgW" type="number" value="9"></div>'+
+      '<div class="br"><button class="btn bc" id="dgCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="dgRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var L=+gv('dgL'),W=+gv('dgW');if(!L||!W)return;
+      var d=Math.sqrt(L*L+W*W);
+      var angL=Math.atan(W/L)*180/Math.PI;
+      var angW=Math.atan(L/W)*180/Math.PI;
+      // 3-4-5 check: both diagonals equal?
+      var gcd=function(a,b){return b?gcd(b,a%b):a;};
+      var g2=gcd(Math.round(L*1000),Math.round(W*1000));
+      var lRatio=Math.round(L*1000)/g2,wRatio=Math.round(W*1000)/g2;
+      g('dgRes').innerHTML=
+        rr('Diagonal',fmtN(d,4)+' ft ('+fmtN(d*12,3)+' in)','a')+
+        rr('Diagonal (in)',fmtN(d*12,3)+'"')+
+        rr('Angle at Length',fmtN(angL,2)+'\u00b0')+
+        rr('Angle at Width',fmtN(angW,2)+'\u00b0')+
+        rr('Ratio',fmtN(lRatio/1000,3)+' : '+fmtN(wRatio/1000,3))+
+        rr('Area',fmtN(L*W,2)+' sq ft');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='dgCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Frame Spacing ───────────────────────────────────────────────
+CALCS['Frame Spacing']={
+  html:function(){return(
+    '<h1 class="pt">Frame Spacing Calculator</h1><p class="ps">Stud, joist, or rafter spacing and count</p>'+
+    '<div class="t2">'+
+    card('FRAME DETAILS',
+      '<div class="fr"><label>Wall / Span Length (ft)</label><input id="fsL" type="number" value="16"></div>'+
+      '<div class="fr"><label>Member Width (in, e.g. 1.5 for 2x)</label><input id="fsMW" type="number" value="1.5" step="0.25"></div>'+
+      '<div class="fr"><label>Spacing On-Center (in)</label>'+
+      '<select id="fsOC"><option value="12">12" OC</option><option value="16" selected>16" OC</option>'+
+      '<option value="19.2">19.2" OC</option><option value="24">24" OC</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="fsCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="fsRes"></div>')+
+    '</div>'+
+    '<div class="card" style="margin-top:14px"><div class="ch">LAYOUT POSITIONS (first 10)</div>'+
+    '<div class="cb"><div id="fsList"></div></div></div>');},
+  init:function(){
+    function calc(){
+      var L=+gv('fsL')*12,mw=+gv('fsMW'),oc=+gv('fsOC');
+      if(!L||!oc)return;
+      var count=Math.floor((L-mw)/oc)+1;
+      var lastPos=(count-1)*oc;
+      var positions=[];
+      for(var i=0;i<count;i++)positions.push(i*oc);
+      g('fsRes').innerHTML=
+        rr('Number of Members',count,'a')+
+        rr('Spacing (OC)',oc+'"')+
+        rr('First Member','0" from start')+
+        rr('Last Member',fmtN(lastPos,1)+'" from start')+
+        rr('Remaining Space',fmtN(L-lastPos-mw,1)+'" (end piece)');
+      var list='';
+      positions.slice(0,10).forEach(function(p,i){
+        list+=rr('Member '+(i+1),fmtN(p,1)+'" ('+Math.floor(p/12)+"' "+fmtN(p%12,2)+'")');
+      });
+      if(count>10)list+='<div style="font-size:11px;color:var(--mu);padding:6px 0">...and '+(count-10)+' more</div>';
+      g('fsList').innerHTML=list;
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='fsCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Lumber ──────────────────────────────────────────────────────
+CALCS['Lumber']={
+  html:function(){return(
+    '<h1 class="pt">Lumber Calculator</h1><p class="ps">Board feet and cost estimator</p>'+
+    '<div class="t2">'+
+    card('BOARD DETAILS',
+      '<div class="fr"><label>Thickness (in, nominal)</label><input id="lmT" type="number" value="2" step="0.25"></div>'+
+      '<div class="fr"><label>Width (in, nominal)</label><input id="lmW" type="number" value="6" step="0.25"></div>'+
+      '<div class="fr"><label>Length (ft)</label><input id="lmL" type="number" value="8"></div>'+
+      '<div class="fr"><label>Quantity (pieces)</label><input id="lmQ" type="number" value="10"></div>'+
+      '<div class="fr"><label>Price per Board Foot ($)</label><input id="lmP" type="number" value="0" step="0.01"></div>'+
+      '<div class="br"><button class="btn bc" id="lmCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="lmRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var t=+gv('lmT'),w=+gv('lmW'),l=+gv('lmL'),q=+gv('lmQ'),price=+gv('lmP');
+      if(!t||!w||!l||!q)return;
+      var bfEach=t*w*l/12;
+      var bfTotal=bfEach*q;
+      var cost=price>0?bfTotal*price:0;
+      g('lmRes').innerHTML=
+        rr('Board Feet per Piece',fmtN(bfEach,3)+' BF')+
+        rr('Total Board Feet',fmtN(bfTotal,2)+' BF','a')+
+        rr('Linear Feet',fmtN(l*q,1)+' LF')+
+        rr('Cubic Feet',fmtN(t/12*w/12*l*q,3)+' ft\u00b3')+
+        (price>0?rr('Estimated Cost',fmtM(cost)):rr('Price','Enter price/BF for cost estimate'));
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='lmCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Miter Joint ─────────────────────────────────────────────────
+CALCS['Miter Joint']={
+  html:function(){return(
+    '<h1 class="pt">Miter Joint Calculator</h1><p class="ps">Miter angles for regular polygons and custom frames</p>'+
+    '<div class="t2">'+
+    card('JOINT DETAILS',
+      '<div class="fr"><label>Number of Sides</label>'+
+      '<input id="mjN" type="number" value="4" min="3" max="20"></div>'+
+      '<div class="fr"><label>Frame Width (in, optional)</label>'+
+      '<input id="mjFW" type="number" placeholder="for inside dim" step="0.25"></div>'+
+      '<div class="fr"><label>Inside Dimension (in)</label>'+
+      '<input id="mjID" type="number" placeholder="e.g. 36" step="0.25"></div>'+
+      '<div class="br"><button class="btn bc" id="mjCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="mjRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var n=+gv('mjN'),fw=+gv('mjFW'),id2=+gv('mjID');
+      if(!n||n<3)return;
+      var interior=(n-2)*180/n;
+      var miter=90-interior/2;
+      var sawSet=interior/2;
+      g('mjRes').innerHTML=
+        rr('Sides',n)+
+        rr('Interior Angle',fmtN(interior,2)+'\u00b0')+
+        rr('Miter Angle',fmtN(miter,2)+'\u00b0','a')+
+        rr('Saw Setting',fmtN(sawSet,2)+'\u00b0 (from 90\u00b0)')+
+        (fw&&id2?rr('Outside Dimension',fmtN(id2+fw*2,2)+'"'):'');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='mjCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Overlapping Boards ─────────────────────────────────────────
+CALCS['Overlapping Boards']={
+  html:function(){return(
+    '<h1 class="pt">Overlapping Boards</h1><p class="ps">Lap siding, shiplap, or clapboard coverage</p>'+
+    '<div class="t2">'+
+    card('BOARD DETAILS',
+      '<div class="fr"><label>Board Width (in)</label><input id="obW" type="number" value="6"></div>'+
+      '<div class="fr"><label>Overlap (in)</label><input id="obOv" type="number" value="1.5" step="0.25"></div>'+
+      '<div class="fr"><label>Wall Height (ft)</label><input id="obH" type="number" value="9"></div>'+
+      '<div class="fr"><label>Wall Length (ft)</label><input id="obL" type="number" value="20"></div>'+
+      '<div class="fr"><label>Waste Factor (%)</label><input id="obWaste" type="number" value="10"></div>'+
+      '<div class="br"><button class="btn bc" id="obCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="obRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var bw=+gv('obW'),ov=+gv('obOv'),H=+gv('obH'),L=+gv('obL'),waste=+gv('obWaste');
+      if(!bw||!H||!L)return;
+      var expose=bw-ov;
+      var rows=Math.ceil(H*12/expose);
+      var area=H*L;
+      var coveragePerBoard=expose/12*L;
+      var boards=Math.ceil(rows*(1+waste/100));
+      g('obRes').innerHTML=
+        rr('Exposure per Board',fmtN(expose,2)+'"')+
+        rr('Rows Needed',rows,'a')+
+        rr('Wall Area',fmtN(area,1)+' sq ft')+
+        rr('Boards (no waste)',rows)+
+        rr('Boards with '+waste+'% Waste',boards,'a')+
+        rr('Coverage per Board',fmtN(coveragePerBoard,2)+' sq ft');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='obCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Parquet Floor ───────────────────────────────────────────────
+CALCS['Parquet Floor']={
+  html:function(){return(
+    '<h1 class="pt">Parquet / Tile Floor</h1><p class="ps">Tiles needed with waste allowance</p>'+
+    '<div class="t2">'+
+    card('ROOM &amp; TILE',
+      '<div class="fr"><label>Room Length (ft)</label><input id="pfRL" type="number" value="12"></div>'+
+      '<div class="fr"><label>Room Width (ft)</label><input id="pfRW" type="number" value="10"></div>'+
+      '<div class="fr"><label>Tile Size</label>'+
+      '<select id="pfTS"><option value="12">12" x 12"</option><option value="18">18" x 18"</option>'+
+      '<option value="24">24" x 24"</option><option value="custom">Custom</option></select></div>'+
+      '<div id="pfCustom" style="display:none">'+
+      '<div class="fr"><label>Tile Width (in)</label><input id="pfTW" type="number" value="12"></div>'+
+      '<div class="fr"><label>Tile Length (in)</label><input id="pfTL" type="number" value="12"></div>'+
+      '</div>'+
+      '<div class="fr"><label>Grout Gap (in)</label><input id="pfGap" type="number" value="0.125" step="0.0625"></div>'+
+      '<div class="fr"><label>Waste Factor (%)</label><input id="pfWaste" type="number" value="10"></div>'+
+      '<div class="br"><button class="btn bc" id="pfCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="pfRes"></div>')+
+    '</div>');},
+  init:function(){
+    g('pg').addEventListener('change',function(e){
+      if(e.target.id==='pfTS')g('pfCustom').style.display=gv('pfTS')==='custom'?'block':'none';
+    });
+    function calc(){
+      var rl=+gv('pfRL'),rw=+gv('pfRW'),waste=+gv('pfWaste'),gap=+gv('pfGap');
+      var ts=gv('pfTS');
+      var tw=ts==='custom'?+gv('pfTW'):+ts,tl=ts==='custom'?+gv('pfTL'):+ts;
+      if(!rl||!rw||!tw||!tl)return;
+      var roomArea=rl*rw;
+      var tileArea=(tw/12)*(tl/12);
+      var tileWithGap=((tw+gap)/12)*((tl+gap)/12);
+      var tilesNeeded=Math.ceil(roomArea/tileWithGap);
+      var withWaste=Math.ceil(tilesNeeded*(1+waste/100));
+      g('pfRes').innerHTML=
+        rr('Room Area',fmtN(roomArea,1)+' sq ft')+
+        rr('Tile Size',tw+'" \u00d7 '+tl+'"')+
+        rr('Tiles (no waste)',tilesNeeded)+
+        rr('Tiles with '+waste+'% Waste',withWaste,'a')+
+        rr('Coverage per Tile',fmtN(tileArea,4)+' sq ft');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='pfCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Ramp ────────────────────────────────────────────────────────
+CALCS['Ramp']={
+  html:function(){return(
+    '<h1 class="pt">Ramp Calculator</h1><p class="ps">Rise, run, length, angle &mdash; ADA compliance check</p>'+
+    '<div class="t2">'+
+    card('RAMP DETAILS',
+      '<div class="fr"><label>Rise (vertical height, in)</label><input id="rpRise" type="number" value="7"></div>'+
+      '<div class="fr"><label>Run (horizontal distance, in)</label><input id="rpRun" type="number" placeholder="auto-calculated"></div>'+
+      '<div class="fr"><label>Width (in)</label><input id="rpW" type="number" value="36"></div>'+
+      '<div class="fr"><label>ADA Max Slope</label>'+
+      '<select id="rpADA"><option value="12">1:12 (standard, 4.76\u00b0)</option>'+
+      '<option value="10">1:10 (existing structures)</option>'+
+      '<option value="8">1:8 (existing structures)</option></select></div>'+
+      '<div class="br"><button class="btn bc" id="rpCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="rpRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var rise=+gv('rpRise'),run=+gv('rpRun'),w=+gv('rpW'),adaRatio=+gv('rpADA');
+      if(!rise)return;
+      if(!run)run=rise*adaRatio;
+      var length=Math.sqrt(rise*rise+run*run);
+      var angle=Math.atan(rise/run)*180/Math.PI;
+      var slope=rise/run;
+      var adaMin=rise*adaRatio;
+      var adaOk=run>=adaMin;
+      g('rpRes').innerHTML=
+        rr('Rise',fmtN(rise,2)+'"')+
+        rr('Run',fmtN(run,2)+'"','a')+
+        rr('Ramp Length',fmtN(length,2)+'" ('+fmtN(length/12,2)+"')")+
+        rr('Angle',fmtN(angle,2)+'\u00b0')+
+        rr('Slope Ratio','1 : '+fmtN(run/rise,2))+
+        rr('Slope %',fmtN(slope*100,1)+'%')+
+        '<div style="padding:8px 0;font-weight:700;color:'+(adaOk?'var(--ok)':'#C53030')+'">'+
+        'ADA Compliance: '+(adaOk?'\u2713 Compliant':'&#9888; Non-compliant (min run: '+adaMin+'")')+
+        '</div>';
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='rpCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Roofing ─────────────────────────────────────────────────────
+CALCS['Roofing']={
+  html:function(){return(
+    '<h1 class="pt">Roofing Calculator</h1><p class="ps">Squares of roofing material needed with pitch adjustment</p>'+
+    '<div class="t2">'+
+    card('ROOF DETAILS',
+      '<div class="fr"><label>Building Length (ft)</label><input id="rfL" type="number" value="40"></div>'+
+      '<div class="fr"><label>Building Width (ft)</label><input id="rfW" type="number" value="30"></div>'+
+      '<div class="fr"><label>Roof Pitch (rise in 12)</label>'+
+      '<select id="rfP"><option value="0">Flat (0/12)</option>'+
+      '<option value="3">3/12</option><option value="4">4/12</option>'+
+      '<option value="5">5/12</option><option value="6" selected>6/12</option>'+
+      '<option value="7">7/12</option><option value="8">8/12</option>'+
+      '<option value="9">9/12</option><option value="12">12/12</option></select></div>'+
+      '<div class="fr"><label>Overhang Each Side (ft)</label><input id="rfOv" type="number" value="1" step="0.5"></div>'+
+      '<div class="fr"><label>Waste Factor (%)</label><input id="rfWaste" type="number" value="10"></div>'+
+      '<div class="br"><button class="btn bc" id="rfCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="rfRes"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var L=+gv('rfL'),W=+gv('rfW'),pitch=+gv('rfP'),ov=+gv('rfOv'),waste=+gv('rfWaste');
+      if(!L||!W)return;
+      var footprint=(L+ov*2)*(W+ov*2);
+      var slopeMultiplier=Math.sqrt(1+Math.pow(pitch/12,2));
+      var roofArea=footprint*slopeMultiplier;
+      var squares=roofArea/100;
+      var withWaste=squares*(1+waste/100);
+      var angle=Math.atan(pitch/12)*180/Math.PI;
+      g('rfRes').innerHTML=
+        rr('Footprint Area',fmtN(footprint,1)+' sq ft')+
+        rr('Pitch Multiplier',fmtN(slopeMultiplier,4)+'x')+
+        rr('Pitch Angle',fmtN(angle,1)+'\u00b0')+
+        rr('Roof Area',fmtN(roofArea,1)+' sq ft','a')+
+        rr('Squares',fmtN(squares,2)+' squares')+
+        rr('Squares with '+waste+'% Waste',fmtN(withWaste,2)+' squares','a')+
+        rr('Bundles (3/square)',Math.ceil(withWaste*3)+' bundles');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='rfCalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Slope ───────────────────────────────────────────────────────
+CALCS['Slope']={
+  html:function(){return(
+    '<h1 class="pt">Slope Calculator</h1><p class="ps">Convert between angle, percentage, and rise/run &mdash; fill any two</p>'+
+    '<div class="t2">'+
+    card('SLOPE VALUES',
+      '<div class="fr"><label>Rise (vertical)</label><input id="slRise" type="number" placeholder="leave blank to solve"></div>'+
+      '<div class="fr"><label>Run (horizontal)</label><input id="slRun" type="number" placeholder="leave blank to solve"></div>'+
+      '<div class="fr"><label>Angle (degrees)</label><input id="slAng" type="number" placeholder="leave blank to solve" step="0.1"></div>'+
+      '<div class="fr"><label>Grade / Slope (%)</label><input id="slPct" type="number" placeholder="leave blank to solve" step="0.1"></div>'+
+      '<div class="br"><button class="btn bc" id="slCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="slRes"></div>')+
+    '</div>');},
+  init:function(){
+    function n(id){var v=gv(id);return v!==''?+v:null;}
+    function calc(){
+      var rise=n('slRise'),run=n('slRun'),ang=n('slAng'),pct=n('slPct');
+      var slope;
+      if(rise!==null&&run!==null&&run!==0)slope=rise/run;
+      else if(ang!==null)slope=Math.tan(ang*Math.PI/180);
+      else if(pct!==null)slope=pct/100;
+      else{g('slRes').innerHTML='<div style="color:var(--mu)">Fill in at least two values.</div>';return;}
+      if(slope===null)return;
+      var calcAng=Math.atan(slope)*180/Math.PI;
+      var calcPct=slope*100;
+      if(rise===null&&run!==null)rise=run*slope;
+      else if(run===null&&rise!==null)run=rise/slope;
+      else if(rise===null&&run===null){rise=slope;run=1;}
+      g('slRes').innerHTML=
+        rr('Angle',fmtN(calcAng,3)+'\u00b0','a')+
+        rr('Grade / Slope',fmtN(calcPct,2)+'%','a')+
+        rr('Rise : Run',fmtN(rise,3)+' : '+fmtN(run,3))+
+        rr('Ratio (1 in X)','1 in '+fmtN(1/slope,2))+
+        rr('Hypotenuse',fmtN(Math.sqrt(rise*rise+run*run),3)+' (same units)');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='slCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Stairs ──────────────────────────────────────────────────────
+CALCS['Stairs']={
+  html:function(){return(
+    '<h1 class="pt">Stair Calculator</h1><p class="ps">Riser &amp; tread sizing with IRC code compliance check</p>'+
+    '<div class="t2">'+
+    card('STAIR DETAILS',
+      '<div class="fr"><label>Total Rise (in)</label><input id="stTR" type="number" value="108"></div>'+
+      '<div class="fr"><label>Desired Riser Height (in)</label><input id="stRH" type="number" value="7" step="0.25"></div>'+
+      '<div class="fr"><label>Stair Width (in)</label><input id="stW" type="number" value="36"></div>'+
+      '<div class="br"><button class="btn bc" id="stCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="stRes"></div>')+
+    '</div>'+
+    card('IRC CODE REFERENCE',
+      '<div style="font-size:12px;line-height:1.8;color:var(--mu)">'+
+      '<b>Max Riser Height:</b> 7\u00be" (7.75")<br>'+
+      '<b>Min Tread Depth:</b> 10"<br>'+
+      '<b>Min Stair Width:</b> 36"<br>'+
+      '<b>Headroom:</b> 6\u2019-8" minimum<br>'+
+      '<b>Handrail:</b> Required when 4+ risers</div>'));},
+  init:function(){
+    function calc(){
+      var totalRise=+gv('stTR'),desiredRiser=+gv('stRH'),width=+gv('stW');
+      if(!totalRise||!desiredRiser)return;
+      var numRisers=Math.round(totalRise/desiredRiser);
+      var actualRiser=totalRise/numRisers;
+      var tread=Math.max(10,24-actualRiser);
+      var totalRun=(numRisers-1)*tread;
+      var riserOk=actualRiser<=7.75;
+      var treadOk=tread>=10;
+      var widthOk=width>=36;
+      function check(ok,val,req){return '<span style="color:'+(ok?'var(--ok)':'#C53030')+'">'+(ok?'\u2713':'\u2717')+' '+val+' (req: '+req+')</span>';}
+      g('stRes').innerHTML=
+        rr('Number of Risers',numRisers,'a')+
+        rr('Number of Treads',numRisers-1)+
+        rr('Actual Riser Height',fmtN(actualRiser,3)+'" '+check(riserOk,fmtN(actualRiser,2)+'"','\u22647.75"'))+
+        rr('Tread Depth (suggested)',fmtN(tread,1)+'" '+check(treadOk,fmtN(tread,1)+'"','\u226510"'))+
+        rr('Total Run',fmtN(totalRun/12,2)+"' ("+fmtN(totalRun,1)+'")')+
+        rr('Stair Width',fmtN(width,0)+'" '+check(widthOk,width+'"','\u226536"'))+
+        rr('Handrail Required',numRisers>=4?'Yes (\u2265 4 risers)':'No');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='stCalc')calc();});
+    g('pg').addEventListener('input',calc);
+    calc();
+  }
+};
+ 
+// ── Construction: Volume ──────────────────────────────────────────────────────
+CALCS['Volume']={
+  html:function(){return(
+    '<h1 class="pt">Volume Calculator</h1><p class="ps">Box, cylinder, sphere, cone &mdash; cubic feet and yards</p>'+
+    '<div class="t2">'+
+    card('SHAPE',
+      '<div class="fr"><label>Shape</label>'+
+      '<select id="volSh"><option>Box / Rectangular</option><option>Cylinder</option>'+
+      '<option>Sphere</option><option>Cone</option><option>Pyramid</option></select></div>'+
+      '<div id="volFl"></div>'+
+      '<div class="br"><button class="btn bc" id="volCalc">Calculate</button></div>')+
+    card('RESULTS','<div id="volRes"></div>')+
+    '</div>');},
+  init:function(){
+    var shapes={
+      'Box / Rectangular':[['Length (ft)','vlL'],['Width (ft)','vlW'],['Height (ft)','vlH']],
+      Cylinder:[['Radius (ft)','vlR'],['Height (ft)','vlH2']],
+      Sphere:[['Radius (ft)','vlR2']],
+      Cone:[['Radius (ft)','vlR3'],['Height (ft)','vlH3']],
+      Pyramid:[['Base Length (ft)','vlBL'],['Base Width (ft)','vlBW'],['Height (ft)','vlH4']]
+    };
+    function renderF(){
+      var s=gv('volSh');
+      g('volFl').innerHTML=(shapes[s]||[]).map(function(f){
+        return '<div class="fr"><label>'+f[0]+'</label><input id="'+f[1]+'" type="number" placeholder="0"></div>';
+      }).join('');
+    }
+    function calc(){
+      var s=gv('volSh'),ft3;
+      try{
+        if(s==='Box / Rectangular')ft3=+gv('vlL')*+gv('vlW')*+gv('vlH');
+        else if(s==='Cylinder')ft3=Math.PI*+gv('vlR')*+gv('vlR')*+gv('vlH2');
+        else if(s==='Sphere')ft3=4/3*Math.PI*Math.pow(+gv('vlR2'),3);
+        else if(s==='Cone')ft3=Math.PI/3*+gv('vlR3')*+gv('vlR3')*+gv('vlH3');
+        else if(s==='Pyramid')ft3=+gv('vlBL')*+gv('vlBW')*+gv('vlH4')/3;
+      }catch(e){}
+      if(!ft3||ft3<=0)return;
+      var yd3=ft3/27,in3=ft3*1728,gallons=ft3*7.48052;
+      g('volRes').innerHTML=
+        rr('Cubic Feet',fmtN(ft3,4)+' ft\u00b3','a')+
+        rr('Cubic Yards',fmtN(yd3,4)+' yd\u00b3')+
+        rr('Cubic Inches',fmtN(in3,2)+' in\u00b3')+
+        rr('Gallons',fmtN(gallons,2)+' gal')+
+        rr('Liters',fmtN(ft3*28.3168,2)+' L');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='volCalc')calc();});
+    g('pg').addEventListener('change',function(e){if(e.target.id==='volSh')renderF();});
+    g('pg').addEventListener('input',calc);
+    renderF();
+  }
+};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+</script>
+</body>
+</html>
