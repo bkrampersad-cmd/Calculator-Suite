@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1F3864">
+<title>Beeran's Calculator Suite</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--nb:#1F3864;--na:#2F5496;--nh:#16294E;--ac:#1565C0;--bg:#EEF2F7;
+  --cd:#fff;--ib:#EBF3FB;--rb:#D6E4F0;--tx:#1A202C;--mu:#718096;
+  --bd:#CBD5E0;--ok:#276749;--f:'Segoe UI',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);display:flex;height:100vh;overflow:hidden}
+#sb{width:220px;min-width:220px;background:var(--nb);display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:transform .25s;z-index:100}
+.logo{padding:18px 14px 12px;text-align:center;border-bottom:1px solid #2F5496}
+.lt{font-size:15px;font-weight:700;color:#fff;line-height:1.5}
+.ls{font-size:11px;color:#90C8F0;margin-top:3px}
+.navarea{flex:1;overflow-y:auto;padding:6px 0}
+.navarea::-webkit-scrollbar{width:4px}
+.navarea::-webkit-scrollbar-thumb{background:#2F5496;border-radius:2px}
+.nb{display:flex;align-items:center;gap:9px;width:calc(100% - 16px);margin:2px 8px;
+  padding:9px 12px;background:transparent;border:none;color:#fff;
+  font:600 13px var(--f);cursor:pointer;text-align:left;border-radius:6px;transition:background .15s}
+.nb:hover{background:var(--nh)}
+.nb.on{background:var(--na)}
+.ic{width:18px;text-align:center;flex-shrink:0}
+.sub{display:none;flex-direction:column}
+.sub.open{display:flex}
+.back{display:flex;align-items:center;gap:8px;width:calc(100% - 16px);margin:6px 8px 2px;
+  padding:8px 12px;background:#16294E;border:none;color:#90C8F0;
+  font:600 12px var(--f);cursor:pointer;border-radius:6px}
+.grp{font-size:10px;color:#90C8F0;padding:8px 18px 2px;text-transform:uppercase;letter-spacing:.8px}
+.sbot{padding:8px;border-top:1px solid #2F5496}
+.spg{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;
+  background:var(--na);border:none;color:#fff;font:600 12px var(--f);
+  cursor:pointer;border-radius:8px;margin-top:4px}
+.spg:hover{background:var(--nh)}
+.spg.alt{background:#16294E}
+#ct{flex:1;overflow-y:auto}
+.pg{padding:24px 28px;max-width:1100px}
+.pt{font-size:22px;font-weight:700;color:var(--nb);margin-bottom:4px}
+.ps{font-size:11px;color:var(--mu);margin-bottom:18px}
+#hm{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--nb);
+  border:none;border-radius:8px;color:#fff;font-size:20px;width:40px;height:40px;cursor:pointer}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+.card{background:var(--cd);border-radius:10px;border:1px solid var(--bd);overflow:hidden;margin-bottom:14px}
+.ch{background:var(--nb);color:#fff;font:700 11px var(--f);padding:8px 14px;text-transform:uppercase;letter-spacing:.5px}
+.cb{padding:16px}
+.t2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.fr label{font-size:12px;min-width:170px;flex-shrink:0}
+input,select{font:13px var(--f);background:var(--ib);border:1px solid #B8CCE4;
+  border-radius:6px;padding:7px 10px;color:var(--tx);width:100%;outline:none}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 2px rgba(21,101,192,.15)}
+.br{display:flex;gap:8px;margin-top:14px}
+.btn{padding:8px 18px;border:none;border-radius:8px;font:700 12px var(--f);cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.bc{background:var(--ac);color:#fff}
+.bs{background:var(--bd);color:var(--tx);padding:6px 12px}
+.rr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #F0F4F8}
+.rr:last-child{border-bottom:none}
+.rl{font-size:11px;color:var(--mu)}
+.rv{font-size:13px;font-weight:700}
+.rv.a{color:var(--ac)}.rv.s{color:var(--ok)}
+.rb{background:var(--rb);border-radius:8px;padding:14px 16px;margin-top:10px}
+.cd2{background:#0D1B2A;color:#fff;font:400 28px 'Courier New',monospace;padding:14px;
+  border-radius:8px;text-align:right;min-height:60px;word-break:break-all;margin-bottom:10px}
+.ex{font-size:12px;color:#90C8F0;min-height:16px}
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ck{padding:14px 6px;border:none;border-radius:8px;font:600 14px var(--f);cursor:pointer}
+.ck:hover{filter:brightness(.9)}
+.kn{background:#EBF3FB;color:var(--tx)}.ko{background:#2F5496;color:#fff}
+.ke{background:var(--ac);color:#fff}.kf{background:#CBD5E0;color:var(--tx)}.k2{grid-column:span 2}
+.tg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.tt{background:var(--ib);border:1px solid var(--bd);border-radius:10px;text-align:center;padding:10px 4px}
+.tp{font:700 15px var(--f);color:var(--ac)}.ta{font-size:12px;margin-top:3px}
+.ss{background:var(--nb);border-radius:10px;display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:18px}
+.sc{text-align:center;padding:18px 8px}
+.sn2{font-size:34px;font-weight:700;color:#90C8F0}.sl{font-size:12px;color:#fff;margin-top:2px}
+.cs{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 20px;text-align:center;color:var(--mu);min-height:300px}
+.cs .ci{font-size:48px;margin-bottom:16px;opacity:.5}
+.cs h3{font-size:18px;color:var(--nb);margin-bottom:8px}
+.cs p{font-size:13px;max-width:340px;line-height:1.6}
+.ac{background:var(--cd);border-radius:12px;border:1px solid var(--bd);padding:24px;margin-bottom:14px}
+.qt{background:var(--rb);border-radius:8px;padding:14px 18px;font-style:italic;
+  font-size:13px;color:var(--nb);margin:14px 0;line-height:1.6}
+textarea{width:100%;font:13px var(--f);padding:10px;background:var(--ib);
+  border:1px solid #B8CCE4;border-radius:8px;resize:vertical;min-height:100px;color:var(--tx);outline:none}
+@media(max-width:700px){
+  #hm{display:flex;align-items:center;justify-content:center}
+  #sb{position:fixed;left:0;top:0;transform:translateX(-100%)}
+  #sb.open{transform:translateX(0)}
+  .ov.open{display:block}
+  #ct{padding-top:52px}
+  .pg{padding:14px}.t2{grid-template-columns:1fr}
+  .tg{grid-template-columns:repeat(3,1fr)}.ss{grid-template-columns:1fr}
+  .fr{flex-direction:column;align-items:flex-start}.fr label{min-width:unset}
+}
+</style>
+</head>
+<body>
+<button id="hm" onclick="toggleSB()">&#9776;</button>
+<div class="ov" id="ov" onclick="toggleSB()"></div>
+
+<nav id="sb">
+  <div class="logo">
+    <div class="lt">&#129518; Beeran's</div>
+    <div class="lt">Calculator Suite</div>
+    <div class="ls">48 calculators &middot; 8 categories</div>
+  </div>
+
+  <div class="navarea" id="mainNav">
+    <button class="nb" onclick="go(0)"><span class="ic">&#128290;</span>Basic Calculator</button>
+    <button class="nb" onclick="go(1)"><span class="ic">&#128300;</span>Scientific &amp; Graph</button>
+    <button class="nb" onclick="showSub('con')"><span class="ic">&#127959;</span>Construction</button>
+    <button class="nb" onclick="showSub('cvt')"><span class="ic">&#128260;</span>Conversion</button>
+    <button class="nb" onclick="showSub('elc')"><span class="ic">&#9889;</span>Electronics</button>
+    <button class="nb" onclick="showSub('fin')"><span class="ic">&#128201;</span>Finance</button>
+    <button class="nb" onclick="showSub('net')"><span class="ic">&#127760;</span>IT Networking</button>
+    <button class="nb" onclick="showSub('med')"><span class="ic">&#127973;</span>Medical</button>
+  </div>
+
+  <div class="navarea sub" id="sub-con">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Construction</div>
+    <button class="nb" onclick="go(2)">Area</button>
+    <button class="nb" onclick="go(3)">Batten Spacing</button>
+    <button class="nb" onclick="go(4)">Concrete Volume</button>
+    <button class="nb" onclick="go(5)">Corner Angle</button>
+    <button class="nb" onclick="go(6)">Crown Molding</button>
+    <button class="nb" onclick="go(7)">Decking</button>
+    <button class="nb" onclick="go(8)">Diagonal</button>
+    <button class="nb" onclick="go(9)">Frame Spacing</button>
+    <button class="nb" onclick="go(10)">Lumber</button>
+    <button class="nb" onclick="go(11)">Miter Joint</button>
+    <button class="nb" onclick="go(12)">Overlapping Boards</button>
+    <button class="nb" onclick="go(13)">Parquet Floor</button>
+    <button class="nb" onclick="go(14)">Ramp</button>
+    <button class="nb" onclick="go(15)">Roofing</button>
+    <button class="nb" onclick="go(16)">Slope</button>
+    <button class="nb" onclick="go(17)">Stairs</button>
+    <button class="nb" onclick="go(18)">Volume</button>
+  </div>
+
+  <div class="navarea sub" id="sub-cvt">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Conversion</div>
+    <button class="nb" onclick="go(19)">Currency Converter</button>
+    <button class="nb" onclick="go(20)">Time &amp; Date</button>
+    <button class="nb" onclick="go(21)">Unit Converter</button>
+  </div>
+
+  <div class="navarea sub" id="sub-elc">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Electronics</div>
+    <button class="nb" onclick="go(22)">Ohm's Law</button>
+    <button class="nb" onclick="go(23)">Series &amp; Parallel</button>
+    <button class="nb" onclick="go(24)">Voltage Divider</button>
+  </div>
+
+  <div class="navarea sub" id="sub-fin">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Finance</div>
+    <button class="nb" onclick="go(25)">Amortization</button>
+    <button class="nb" onclick="go(26)">Bill Splitter</button>
+    <button class="nb" onclick="go(27)">Compound Interest</button>
+    <button class="nb" onclick="go(28)">Credit Card Payoff</button>
+    <button class="nb" onclick="go(29)">Depreciation</button>
+    <button class="nb" onclick="go(30)">Loan</button>
+    <button class="nb" onclick="go(31)">MACRS Full</button>
+    <button class="nb" onclick="go(32)">MACRS Rate</button>
+    <button class="nb" onclick="go(33)">Mortgage</button>
+    <button class="nb" onclick="go(34)">ROI</button>
+    <button class="nb" onclick="go(35)">Savings Goal</button>
+  </div>
+
+  <div class="navarea sub" id="sub-net">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">IT Networking</div>
+    <button class="nb" onclick="go(36)">Binary to Hex</button>
+    <button class="nb" onclick="go(37)">IP Converter</button>
+    <button class="nb" onclick="go(38)">IPv6 Calculator</button>
+    <button class="nb" onclick="go(39)">Subnet / CIDR</button>
+    <button class="nb" onclick="go(40)">Subnet Cheat Sheet</button>
+    <button class="nb" onclick="go(41)">Supernet</button>
+  </div>
+
+  <div class="navarea sub" id="sub-med">
+    <button class="back" onclick="hideSub()">&#8592; Back</button>
+    <div class="grp">Medical</div>
+    <button class="nb" onclick="go(42)">BMI Calculator</button>
+    <button class="nb" onclick="go(43)">Body Surface Area</button>
+    <button class="nb" onclick="go(44)">Drug Dosage</button>
+    <button class="nb" onclick="go(45)">IV Drip Rate</button>
+    <button class="nb" onclick="go(46)">Opioid Conversion</button>
+    <button class="nb" onclick="go(47)">Pharmacy Dilution</button>
+  </div>
+
+  <div class="sbot">
+    <button class="spg" onclick="goPage('settings')">&#9881;&#65039; Settings</button>
+    <button class="spg alt" onclick="goPage('about')">&#8505;&#65039; About</button>
+  </div>
+</nav>
+
+<main id="ct"><div id="pg" class="pg"></div></main>
+<script>
+// Flat calc list — index matches onclick go(N)
+var NAMES=[
+  'Basic Calculator','Scientific Calculator',
+  'Area','Batten Spacing','Concrete Volume','Corner Angle','Crown Molding',
+  'Decking','Diagonal','Frame Spacing','Lumber','Miter Joint',
+  'Overlapping Boards','Parquet Floor','Ramp','Roofing','Slope','Stairs','Volume',
+  'Currency Converter','Time & Date','Unit Converter',
+  "Ohm's Law",'Series & Parallel','Voltage Divider',
+  'Amortization','Bill Splitter','Compound Interest','Credit Card Payoff',
+  'Depreciation','Loan','MACRS Full','MACRS Rate','Mortgage','ROI','Savings Goal',
+  'Binary to Hex','IP Converter','IPv6 Calculator','Subnet / CIDR',
+  'Subnet Cheat Sheet','Supernet',
+  'BMI Calculator','Body Surface Area','Drug Dosage',
+  'IV Drip Rate','Opioid Conversion','Pharmacy Dilution'
+];
+
+var g=function(id){return document.getElementById(id);};
+var gv=function(id){var e=g(id);return e?e.value:'';};
+function fmtM(v){return '$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtN(v,d){if(!d)d=2;return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function rr(l,v,c){return '<div class="rr"><span class="rl">'+l+'</span><span class="rv'+(c?' '+c:'')+'">'+v+'</span></div>';}
+function card(h,b){return '<div class="card"><div class="ch">'+h+'</div><div class="cb">'+b+'</div></div>';}
+
+var activeSub='';
+function showSub(id){
+  g('mainNav').style.display='none';
+  var subs=['con','cvt','elc','fin','net','med'];
+  for(var i=0;i<subs.length;i++){
+    var el=g('sub-'+subs[i]);
+    if(el)el.classList.remove('open');
+  }
+  var s=g('sub-'+id);
+  if(s){s.classList.add('open');activeSub=id;}
+  closeMB();
+}
+function hideSub(){
+  g('mainNav').style.display='block';
+  if(activeSub){var el=g('sub-'+activeSub);if(el)el.classList.remove('open');}
+  activeSub='';
+}
+
+function go(idx){
+  var name=NAMES[idx];
+  // highlight
+  var all=document.querySelectorAll('.nb');
+  for(var i=0;i<all.length;i++)all[i].classList.remove('on');
+  // find button with onclick go(idx) and highlight
+  var allBtns=document.querySelectorAll('[onclick]');
+  for(var i=0;i<allBtns.length;i++){
+    if(allBtns[i].getAttribute('onclick')==='go('+idx+')'){
+      allBtns[i].classList.add('on'); break;
+    }
+  }
+  if(CALCS[name]){
+    g('pg').innerHTML=CALCS[name].html();
+    CALCS[name].init&&CALCS[name].init();
+  }else{
+    g('pg').innerHTML='<div class="cs"><div class="ci">&#128295;</div><h3>'+name+'</h3>'+
+      '<p>Coming in the next release. The desktop app has all 48 calculators.</p></div>';
+  }
+  closeMB();
+}
+
+function goPage(p){
+  var all=document.querySelectorAll('.nb');
+  for(var i=0;i<all.length;i++)all[i].classList.remove('on');
+  if(p==='about'){g('pg').innerHTML=aboutHTML();}
+  if(p==='settings'){g('pg').innerHTML=settingsHTML();initSettings();}
+  closeMB();
+}
+
+var CALCS={};
+
+CALCS['Basic Calculator']={
+  html:function(){return(
+    '<h1 class="pt">&#128290; Basic Calculator</h1><p class="ps">Full keyboard support</p>'+
+    '<div style="max-width:320px">'+
+    '<div class="cd2"><div class="ex" id="be">&nbsp;</div><div id="bd">0</div></div>'+
+    '<div class="cg">'+
+    '<button class="ck kf" data-k="AC">AC</button>'+
+    '<button class="ck kf" data-k="+/-">+/&#8722;</button>'+
+    '<button class="ck kf" data-k="%">%</button>'+
+    '<button class="ck ko" data-k="/">&divide;</button>'+
+    '<button class="ck kn" data-k="7">7</button>'+
+    '<button class="ck kn" data-k="8">8</button>'+
+    '<button class="ck kn" data-k="9">9</button>'+
+    '<button class="ck ko" data-k="*">&times;</button>'+
+    '<button class="ck kn" data-k="4">4</button>'+
+    '<button class="ck kn" data-k="5">5</button>'+
+    '<button class="ck kn" data-k="6">6</button>'+
+    '<button class="ck ko" data-k="-">&#8722;</button>'+
+    '<button class="ck kn" data-k="1">1</button>'+
+    '<button class="ck kn" data-k="2">2</button>'+
+    '<button class="ck kn" data-k="3">3</button>'+
+    '<button class="ck ko" data-k="+">+</button>'+
+    '<button class="ck kn k2" data-k="0">0</button>'+
+    '<button class="ck kn" data-k=".">.</button>'+
+    '<button class="ck ke" data-k="=">=</button>'+
+    '</div></div>');},
+  init:function(){
+    var cur='0',expr='',op='',prev='',fresh=false;
+    function dsp(){g('bd').textContent=cur;g('be').textContent=expr||'\u00a0';}
+    function bc(k){
+      if((k>='0'&&k<='9')||k==='.'){
+        if(k==='.'&&cur.indexOf('.')>=0)return;
+        cur=((fresh||cur==='0')&&k!=='.')?k:(cur+k);fresh=false;
+      }else if('+-*/'.indexOf(k)>=0){
+        if(op&&!fresh){try{cur=''+new Function('return '+prev+op+cur)();}catch(e){}}
+        prev=cur;op=k;expr=cur+' '+(k==='*'?'x':k)+' ';fresh=true;
+      }else if(k==='='){
+        if(!op)return;
+        try{expr=cur+' =';cur=''+new Function('return '+prev+op+cur)();op='';prev='';fresh=true;}
+        catch(e){cur='Error';}
+      }else if(k==='AC'){cur='0';expr='';op='';prev='';fresh=false;}
+      else if(k==='+/-'){cur=cur[0]==='-'?cur.slice(1):'-'+cur;}
+      else if(k==='%'){try{cur=''+parseFloat(cur)/100;}catch(e){}}
+      dsp();
+    }
+    g('pg').addEventListener('click',function(e){
+      var b=e.target.closest('[data-k]');if(b)bc(b.getAttribute('data-k'));
+    });
+    document.onkeydown=function(e){
+      var m={'Enter':'=','Backspace':'AC','Escape':'AC'};
+      var k=m[e.key]||e.key;
+      if('0123456789.+-*/='.indexOf(k)>=0||k==='AC')bc(k);
+    };
+    dsp();
+  }
+};
+
+CALCS['Area']={
+  html:function(){return(
+    '<h1 class="pt">Area Calculator</h1><p class="ps">Rectangle, circle, triangle and more</p>'+
+    '<div class="t2">'+
+    card('SHAPE',
+      '<div class="fr"><label>Shape</label>'+
+      '<select id="ash"><option>Rectangle</option><option>Square</option>'+
+      '<option>Circle</option><option>Triangle</option><option>Trapezoid</option></select></div>'+
+      '<div id="afl"></div>'+
+      '<div class="br"><button class="btn bc" id="acalc">Calculate</button>'+
+      '<button class="btn bs" id="acl">Clear</button></div>')+
+    card('RESULTS','<div id="ares"><div class="rr"><span class="rl">Fill in dimensions</span><span class="rv">&mdash;</span></div></div>')+
+    '</div>');},
+  init:function(){
+    var S={Rectangle:[['Length','al'],['Width','aw']],Square:[['Side','as']],
+      Circle:[['Radius','ar']],Triangle:[['Base','ab'],['Height','ah']],
+      Trapezoid:[['Base 1','ab1'],['Base 2','ab2'],['Height','aht']]};
+    function render(){
+      var s=gv('ash'),h='',f=S[s];
+      for(var i=0;i<f.length;i++)h+='<div class="fr"><label>'+f[i][0]+'</label><input id="'+f[i][1]+'" type="number" placeholder="0"></div>';
+      g('afl').innerHTML=h;
+    }
+    function calc(){
+      var s=gv('ash'),a=NaN,p=NaN;
+      try{
+        if(s==='Rectangle'){var l=+gv('al'),w=+gv('aw');a=l*w;p=2*(l+w);}
+        else if(s==='Square'){var x=+gv('as');a=x*x;p=4*x;}
+        else if(s==='Circle'){var r=+gv('ar');a=Math.PI*r*r;p=2*Math.PI*r;}
+        else if(s==='Triangle'){a=.5*+gv('ab')*+gv('ah');}
+        else if(s==='Trapezoid'){a=.5*(+gv('ab1')+(+gv('ab2')))*+gv('aht');}
+      }catch(e){}
+      g('ares').innerHTML=rr('Area',isNaN(a)?'&mdash;':fmtN(a)+' ft\u00b2','a')+
+        (isNaN(p)?'':rr('Perimeter',fmtN(p)+' ft'))+
+        (isNaN(a)?'':rr('Area (m\u00b2)',fmtN(a*.0929)+' m\u00b2'));
+    }
+    g('ash').addEventListener('change',render);
+    g('pg').addEventListener('click',function(e){
+      if(e.target.id==='acalc')calc();
+      if(e.target.id==='acl'){var ins=g('afl').querySelectorAll('input');for(var i=0;i<ins.length;i++)ins[i].value='';}
+    });
+    g('pg').addEventListener('input',function(e){if(e.target.id!=='ash')calc();});
+    render();
+  }
+};
+
+CALCS['Currency Converter']={
+  html:function(){
+    var CC=['AED','AUD','BRL','CAD','CHF','CNY','COP','DKK','EGP','EUR','GBP',
+      'HKD','IDR','INR','JPY','KRW','MXN','NOK','NZD','PHP','PKR','QAR',
+      'SAR','SEK','SGD','THB','TRY','TTD','USD','ZAR'];
+    var o1='',o2='';
+    for(var i=0;i<CC.length;i++){
+      o1+='<option'+(CC[i]==='USD'?' selected':'')+'>'+CC[i]+'</option>';
+      o2+='<option'+(CC[i]==='EUR'?' selected':'')+'>'+CC[i]+'</option>';
+    }
+    return('<h1 class="pt">Currency Converter</h1><p class="ps">Manual rate or live fetch</p>'+
+      '<div class="t2">'+
+      card('INPUTS',
+        '<div class="fr"><label>Amount</label><input id="camt" type="number" value="1000"></div>'+
+        '<div class="fr"><label>From</label><select id="cfr">'+o1+'</select></div>'+
+        '<div class="fr"><label>To</label><select id="cto">'+o2+'</select></div>'+
+        '<div class="fr"><label>Rate</label>'+
+        '<div style="display:flex;gap:6px;flex:1"><input id="crt" type="number" value="0.92" style="flex:1">'+
+        '<button class="btn bs" id="clv">&#127760; Live</button></div></div>'+
+        '<div id="cst" style="font-size:11px;color:var(--mu);margin-top:4px"></div>'+
+        '<div class="br"><button class="btn bc" id="cgo">Convert</button></div>')+
+      card('RESULT','<div id="crs"></div>')+
+      '</div>');},
+  init:function(){
+    function calc(){
+      var a=+gv('camt'),r=+gv('crt'),f=gv('cfr'),t=gv('cto');
+      if(!r)return;
+      g('crs').innerHTML='<div class="rb"><div style="font-size:26px;font-weight:700;color:var(--ac)">'+
+        t+' '+fmtN(a*r)+'</div><div style="font-size:12px;color:var(--mu);margin-top:4px">'+
+        a.toLocaleString()+' '+f+' @ '+r+'</div></div>'+rr('Reverse','1 '+t+' = '+fmtN(1/r,4)+' '+f);
+    }
+    function live(){
+      var f=gv('cfr').toLowerCase(),t=gv('cto').toLowerCase();
+      g('cst').textContent='Fetching...';
+      fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/'+f+'.json')
+        .then(function(r){return r.json();})
+        .then(function(d){
+          var rate=d[f]&&d[f][t];
+          if(rate){g('crt').value=rate.toFixed(6);g('cst').textContent='Rate as of '+d.date;calc();}
+          else g('cst').textContent='Not found: '+t.toUpperCase();
+        }).catch(function(){g('cst').textContent='Error';});
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='cgo')calc();if(e.target.id==='clv')live();});
+    g('pg').addEventListener('input',function(e){if('camt crt'.indexOf(e.target.id)>=0)calc();});
+    g('pg').addEventListener('change',function(e){if('cfr cto'.indexOf(e.target.id)>=0)calc();});
+    calc();
+  }
+};
+
+CALCS["Ohm's Law"]={
+  html:function(){return(
+    '<h1 class="pt">Ohm\'s Law</h1><p class="ps">Fill any two &mdash; rest are calculated</p>'+
+    '<div class="t2">'+
+    card('VALUES (fill any two)',
+      '<div class="fr"><label>Voltage V (volts)</label><input id="ov" type="number" placeholder="blank"></div>'+
+      '<div class="fr"><label>Current I (amps)</label><input id="oi" type="number" placeholder="blank"></div>'+
+      '<div class="fr"><label>Resistance R (ohms)</label><input id="or" type="number" placeholder="blank"></div>'+
+      '<div class="fr"><label>Power P (watts)</label><input id="op" type="number" placeholder="blank"></div>'+
+      '<div class="br"><button class="btn bc" id="ocl">Clear</button></div>')+
+    card('RESULTS','<div id="ors"><div class="rr"><span class="rl">Fill in two values</span></div></div>')+
+    '</div>');},
+  init:function(){
+    function nv(id){var v=gv(id);return(v!==''&&!isNaN(+v))?+v:null;}
+    function calc(){
+      var V=nv('ov'),I=nv('oi'),R=nv('or'),P=nv('op'),v=V,i=I,r=R,p=P;
+      if(v&&i){r=v/i;p=v*i;}else if(v&&r){i=v/r;p=v*v/r;}else if(v&&p){i=p/v;r=v*v/p;}
+      else if(i&&r){v=i*r;p=i*i*r;}else if(i&&p){v=p/i;r=p/(i*i);}
+      else if(r&&p){v=Math.sqrt(p*r);i=Math.sqrt(p/r);}
+      else{g('ors').innerHTML='<div class="rr"><span class="rl">Fill in two values</span></div>';return;}
+      function f(x){return x<.001?fmtN(x*1e6,3)+' u':x<1?fmtN(x*1000,3)+' m':fmtN(x,4)+' ';}
+      g('ors').innerHTML=rr('Voltage',f(v)+'V','a')+rr('Current',f(i)+'A')+rr('Resistance',f(r)+'&#937;')+rr('Power',f(p)+'W');
+    }
+    g('pg').addEventListener('input',calc);
+    g('pg').addEventListener('click',function(e){if(e.target.id==='ocl'){['ov','oi','or','op'].forEach(function(id){g(id)&&(g(id).value='');});}});
+  }
+};
+
+CALCS['Bill Splitter']={
+  html:function(){return(
+    '<h1 class="pt">Bill Splitter</h1><p class="ps">Split equally or by custom % &mdash; tip included</p>'+
+    '<div class="t2">'+
+    card('BILL',
+      '<div class="fr"><label>Bill Amount ($)</label><input id="bamt" type="number" value="100"></div>'+
+      '<div class="fr"><label>Tip (%)</label><input id="btip" type="number" value="15"></div>'+
+      '<div class="fr"><label>Number of People</label><input id="bnum" type="number" value="2" min="1" max="20"></div>'+
+      '<div style="margin:10px 0 4px;font-size:11px;font-weight:700;color:var(--mu)">SPLIT METHOD</div>'+
+      '<label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:5px;cursor:pointer">'+
+      '<input type="radio" name="bm" value="eq" checked> Split Equally</label>'+
+      '<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">'+
+      '<input type="radio" name="bm" value="cu"> Custom %</label>'+
+      '<div class="br"><button class="btn bc" id="bcalc">Calculate</button></div>')+
+    card('RESULTS',
+      '<div id="bres"></div>'+
+      '<div id="bcust" style="display:none;margin-top:12px">'+
+      '<div style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:6px">CUSTOM SPLIT</div>'+
+      '<div id="brows"></div>'+
+      '<div id="bptot" style="font-size:12px;font-weight:700;text-align:right;margin-top:4px"></div>'+
+      '</div>')+
+    '</div>'+
+    card('QUICK TIP REFERENCE','<div class="tg" id="btips"></div>'));},
+  init:function(){
+    var cv=[];
+    function mode(){var el=document.querySelector('input[name="bm"]:checked');return el?el.value:'eq';}
+    function rebuild(){
+      var n=Math.max(1,Math.min(20,+gv('bnum')||2));
+      var base=Math.floor(1000/n)/10,rem=Math.round((100-base*n)*10)/10;
+      cv=[];for(var i=0;i<n;i++)cv.push(i===0?Math.round((base+rem)*10)/10:base);
+      var h='';
+      for(var i=0;i<cv.length;i++){
+        h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'+
+          '<span style="font-size:12px;min-width:70px">Person '+(i+1)+':</span>'+
+          '<input type="number" value="'+cv[i]+'" style="width:80px" class="bpct" data-bi="'+i+'">'+
+          '<span style="font-size:11px;color:var(--mu)">%</span>'+
+          '<span style="font-size:12px;font-weight:600;color:var(--ac)" id="bpr'+i+'">&mdash;</span></div>';
+      }
+      g('brows').innerHTML=h;upd();calc();
+    }
+    function upd(){
+      var t=0;for(var i=0;i<cv.length;i++)t+=cv[i];t=Math.round(t*10)/10;
+      g('bptot').textContent='Total: '+t+'%';g('bptot').style.color=Math.abs(t-100)<.05?'var(--ok)':'#C53030';
+    }
+    function calc(){
+      var a=+gv('bamt')||0,t=+gv('btip')||0,n=Math.max(1,+gv('bnum')||2),ta=a*t/100,gr=a+ta;
+      g('bres').innerHTML=rr('Tip',fmtM(ta))+rr('Grand Total',fmtM(gr),'a')+
+        '<div style="height:6px"></div>'+rr('Subtotal/Person',fmtM(a/n))+rr('Tip/Person',fmtM(ta/n))+rr('Total/Person',fmtM(gr/n),'a');
+      var th='';[5,10,15,18,20].forEach(function(p){th+='<div class="tt"><div class="tp">'+p+'%</div><div class="ta">'+fmtM(a*p/100)+'</div></div>';});
+      g('btips').innerHTML=th;
+      if(mode()==='cu')cv.forEach(function(p,i){var e=g('bpr'+i);if(e)e.textContent=fmtM(gr*p/100);});
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='bcalc')calc();});
+    g('pg').addEventListener('change',function(e){
+      if(e.target.name==='bm'){g('bcust').style.display=mode()==='cu'?'block':'none';if(mode()==='cu')rebuild();else calc();}
+    });
+    g('pg').addEventListener('input',function(e){
+      if(e.target.id==='bnum')rebuild();
+      else if(e.target.classList.contains('bpct')){cv[+e.target.getAttribute('data-bi')]=+e.target.value||0;upd();calc();}
+      else if(e.target.id==='bamt'||e.target.id==='btip')calc();
+    });
+    rebuild();
+  }
+};
+
+CALCS['Subnet / CIDR']={
+  html:function(){return(
+    '<h1 class="pt">Subnet / CIDR</h1><p class="ps">IPv4 network analysis</p>'+
+    '<div class="t2">'+
+    card('INPUT',
+      '<div class="fr"><label>IP / CIDR</label><input id="snip" type="text" value="192.168.1.0/24"></div>'+
+      '<div class="br"><button class="btn bc" id="sncalc">Calculate</button>'+
+      '<button class="btn bs" id="snsmp">Sample</button></div>')+
+    card('DETAILS','<div id="snres"><div class="rr"><span class="rl">Enter CIDR above</span></div></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      try{
+        var p=gv('snip').split('/'),ipS=p[0].trim(),pf=parseInt(p[1]);
+        if(isNaN(pf)||pf<0||pf>32)throw new Error('Bad prefix');
+        var o=ipS.split('.').map(Number);if(o.length!==4)throw new Error('Bad IP');
+        var ipN=(((o[0]*256+o[1])*256+o[2])*256+o[3])>>>0;
+        var mask=(pf===0?0:((-1)<<(32-pf)))>>>0;
+        var net=(ipN&mask)>>>0,bcast=(net|(~mask>>>0))>>>0,hosts=Math.max(0,bcast-net-1);
+        function ip(n){return[(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');}
+        function mk(m){return[(m>>>24)&255,(m>>>16)&255,(m>>>8)&255,m&255].join('.');}
+        g('snres').innerHTML=rr('Network',ip(net),'a')+rr('Mask',mk(mask))+rr('Broadcast',ip(bcast))+
+          rr('First',pf>=31?'N/A':ip(net+1))+rr('Last',pf>=31?'N/A':ip(bcast-1))+
+          rr('Hosts',hosts.toLocaleString(),'a')+rr('CIDR',ip(net)+'/'+pf)+rr('Class',o[0]<128?'A':o[0]<192?'B':'C');
+      }catch(e){g('snres').innerHTML='<div class="rr"><span class="rl" style="color:#C53030">'+e.message+'</span></div>';}
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='sncalc')calc();if(e.target.id==='snsmp'){g('snip').value='10.0.0.0/8';calc();}});
+    g('pg').addEventListener('keydown',function(e){if(e.key==='Enter')calc();});
+    calc();
+  }
+};
+
+CALCS['BMI Calculator']={
+  html:function(){return(
+    '<h1 class="pt">BMI Calculator</h1><p class="ps">For reference only</p>'+
+    '<div class="t2">'+
+    card('MEASUREMENTS',
+      '<div class="fr"><label>Units</label>'+
+      '<select id="bmu"><option value="imp">Imperial (lbs / ft)</option><option value="met">Metric (kg / cm)</option></select></div>'+
+      '<div id="bmfl"></div>'+
+      '<div class="br"><button class="btn bc" id="bmcalc">Calculate</button></div>')+
+    card('RESULT','<div id="bmres"></div>')+
+    '</div>');},
+  init:function(){
+    var sc=[[0,'Underweight','#3B82F6'],[18.5,'Normal','var(--ok)'],[25,'Overweight','#F59E0B'],[30,'Obese','#EF4444']];
+    function rf(){
+      var m=gv('bmu')==='met';
+      g('bmfl').innerHTML=m?
+        '<div class="fr"><label>Weight (kg)</label><input id="bmkg" type="number" placeholder="70"></div>'+
+        '<div class="fr"><label>Height (cm)</label><input id="bmcm" type="number" placeholder="170"></div>':
+        '<div class="fr"><label>Weight (lbs)</label><input id="bmlb" type="number" placeholder="154"></div>'+
+        '<div class="fr"><label>Height (ft)</label><input id="bmft" type="number" placeholder="5"></div>'+
+        '<div class="fr"><label>Height (in)</label><input id="bmin" type="number" placeholder="7"></div>';
+    }
+    function calc(){
+      var b;
+      if(gv('bmu')==='met'){var k=+gv('bmkg'),c=+gv('bmcm');if(!k||!c)return;b=k/((c/100)*(c/100));}
+      else{var l=+gv('bmlb'),f=+gv('bmft'),n=+gv('bmin');if(!l||!f)return;var t=f*12+n;b=703*l/(t*t);}
+      var cat=sc[0];for(var i=0;i<sc.length;i++)if(b>=sc[i][0])cat=sc[i];
+      var rows='';for(var i=0;i<sc.length;i++)rows+=rr(sc[i][1],'BMI '+sc[i][0]+'');
+      g('bmres').innerHTML='<div style="text-align:center;padding:14px 0">'+
+        '<div style="font-size:50px;font-weight:700;color:'+cat[2]+'">'+fmtN(b,1)+'</div>'+
+        '<div style="font-size:15px;font-weight:600;color:'+cat[2]+';margin-top:4px">'+cat[1]+'</div></div>'+rows;
+    }
+    g('pg').addEventListener('change',function(e){if(e.target.id==='bmu')rf();});
+    g('pg').addEventListener('click',function(e){if(e.target.id==='bmcalc')calc();});
+    g('pg').addEventListener('input',calc);
+    rf();
+  }
+};
+
+CALCS['Compound Interest']={
+  html:function(){return(
+    '<h1 class="pt">Compound Interest</h1><p class="ps">The power of compounding</p>'+
+    '<div class="t2">'+
+    card('INPUTS',
+      '<div class="fr"><label>Principal ($)</label><input id="cip" type="number" value="10000"></div>'+
+      '<div class="fr"><label>Annual Rate (%)</label><input id="cir" type="number" value="7" step="0.1"></div>'+
+      '<div class="fr"><label>Years</label><input id="cit" type="number" value="10"></div>'+
+      '<div class="fr"><label>Compounds / Year</label>'+
+      '<select id="cin"><option value="1">Annually</option><option value="2">Semi-annually</option>'+
+      '<option value="4">Quarterly</option><option value="12" selected>Monthly</option>'+
+      '<option value="365">Daily</option></select></div>'+
+      '<div class="fr"><label>Monthly Contribution</label><input id="cic" type="number" value="0"></div>'+
+      '<div class="br"><button class="btn bc" id="cicalc">Calculate</button></div>')+
+    card('RESULTS','<div id="cirs"></div>')+
+    '</div>');},
+  init:function(){
+    function calc(){
+      var P=+gv('cip'),r=+gv('cir')/100,t=+gv('cit'),n=+gv('cin'),c=+gv('cic');
+      if(!P||r<=0||t<=0)return;
+      var base=P*Math.pow(1+r/n,n*t),contrib=c>0?c*(Math.pow(1+r/n,n*t)-1)/(r/n):0,total=base+contrib;
+      var inv=P+c*12*t;
+      g('cirs').innerHTML=rr('Final Balance',fmtM(total),'a')+rr('Principal',fmtM(P))+
+        rr('Contributions',fmtM(c*12*t))+rr('Interest',fmtM(total-inv),'s')+rr('Return',fmtN((total/inv-1)*100,1)+'%');
+    }
+    g('pg').addEventListener('click',function(e){if(e.target.id==='cicalc')calc();});
+    g('pg').addEventListener('input',calc);g('pg').addEventListener('change',calc);
+    calc();
+  }
+};
+
+function aboutHTML(){return(
+  '<h1 class="pt">Welcome! &#128075;</h1>'+
+  '<div class="ac"><p style="font-size:13px;line-height:1.7;margin-bottom:14px">'+
+  'Beeran\'s Calculator Suite was born from a simple idea &mdash; why juggle a dozen different tools '+
+  'when everything you need can live beautifully in one place?<br><br>'+
+  'Whether you\'re a contractor pricing a job, a nurse calculating a dosage, a developer subnetting '+
+  'a network, or just splitting dinner with friends &mdash; this suite was built with you in mind.</p>'+
+  '<div class="ss"><div class="sc"><div class="sn2">48</div><div class="sl">Calculators</div></div>'+
+  '<div class="sc"><div class="sn2">8</div><div class="sl">Categories</div></div>'+
+  '<div class="sc"><div class="sn2">&#8734;</div><div class="sl">Free Forever</div></div></div>'+
+  '<div class="qt">&ldquo;I wanted to bring many of the most popular everyday calculators together '+
+  'in one beautiful, easy-to-use suite &mdash; no ads, no internet required.&rdquo;</div>'+
+  '<div style="font-size:12px;color:var(--mu);padding-top:12px;border-top:1px solid var(--bd)">'+
+  '&#10024; Created by <strong>Beeran Rampersad</strong> &middot; Built with Claude AI</div></div>'+
+  '<div class="ac"><h2 style="font-size:18px;font-weight:700;color:var(--nb);margin-bottom:10px">&#128172; Got a Suggestion?</h2>'+
+  '<p style="font-size:13px;margin-bottom:12px;line-height:1.6">This suite grows with its users! Write your idea below.</p>'+
+  '<textarea id="sugtxt" rows="4" placeholder="Write your thoughts here..."></textarea>'+
+  '<div style="display:flex;justify-content:flex-end;margin-top:8px">'+
+  '<button class="btn bc" id="sugsend">&#128231; Submit</button></div></div>'+
+  '<div style="text-align:center;font-size:11px;color:var(--mu);padding:10px 0">v1.0.0 &middot; &copy; 2026 Beeran Rampersad</div>');
+}
+document.addEventListener('click',function(e){
+  if(e.target.id==='sugsend'){
+    var m=(g('sugtxt')||{value:''}).value.trim();if(!m)return;
+    window.open('mailto:CalculatorSuite@outlook.com?subject='+encodeURIComponent('Calculator Suite Suggestion')+'&body='+encodeURIComponent(m));
+  }
+});
+
+var SK='cs';
+function loadS(){try{return JSON.parse(localStorage.getItem(SK)||'{}');}catch(e){return{};}}
+function settingsHTML(){return(
+  '<h1 class="pt">Settings</h1><div class="ac">'+
+  '<div class="fr"><label>Theme</label><select id="sth"><option value="lt">Light</option><option value="dk">Dark</option></select></div>'+
+  '<div class="br"><button class="btn bc" id="ssv">Save</button><button class="btn bs" id="srs">Reset</button></div></div>');}
+function initSettings(){var s=loadS();if(g('sth'))g('sth').value=s.t||'lt';}
+function applyT(s){
+  if(s.t==='dk'){
+    document.documentElement.style.setProperty('--bg','#1a1a2e');document.documentElement.style.setProperty('--cd','#16213e');
+    document.documentElement.style.setProperty('--tx','#e0e0e0');document.documentElement.style.setProperty('--bd','#2a2a4a');
+    document.documentElement.style.setProperty('--ib','#0f3460');document.documentElement.style.setProperty('--rb','#0f3460');
+    document.documentElement.style.setProperty('--mu','#a0a0b0');
+  }else{
+    document.documentElement.style.setProperty('--bg','#EEF2F7');document.documentElement.style.setProperty('--cd','#fff');
+    document.documentElement.style.setProperty('--tx','#1A202C');document.documentElement.style.setProperty('--bd','#CBD5E0');
+    document.documentElement.style.setProperty('--ib','#EBF3FB');document.documentElement.style.setProperty('--rb','#D6E4F0');
+    document.documentElement.style.setProperty('--mu','#718096');
+  }
+}
+document.addEventListener('click',function(e){
+  if(e.target.id==='ssv'){var s={t:gv('sth')};localStorage.setItem(SK,JSON.stringify(s));applyT(s);e.target.textContent='Saved!';}
+  if(e.target.id==='srs'){localStorage.removeItem(SK);location.reload();}
+});
+
+function toggleSB(){g('sb').classList.toggle('open');g('ov').classList.toggle('open');}
+function closeMB(){g('sb').classList.remove('open');g('ov').classList.remove('open');}
+
+applyT(loadS());
+go(0);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+</script>
+</body>
+</html>
