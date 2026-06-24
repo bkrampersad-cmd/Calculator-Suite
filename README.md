@@ -2,7 +2,7 @@
  
 > *Why juggle a dozen different tools when everything you need can live beautifully in one place?*
  
-A free, fully offline calculator suite with **48 calculators across 8 categories** — no ads, no subscriptions, no account required. Works in any browser and installs as a native-feeling app on your phone or desktop.
+A free, fully offline calculator suite with **49 calculators across 8 categories** — no ads, no subscriptions, no account required. Works in any browser and installs as a native-feeling app on your phone or desktop.
  
 **🌐 [beeranscalculatorsuite.com](https://beeranscalculatorsuite.com)**
  
@@ -16,7 +16,7 @@ Standard arithmetic with keyboard support and calculation history.
 ### 🔬 Scientific & Graphing
 Full scientific calculator with DEG/RAD mode — sin, cos, tan, log, ln, √, x², xʸ, n!, π, e, and more.
  
-### 🏗️ Construction (17 calculators)
+### 🏗️ Construction (18 calculators)
 Area · Batten Spacing · Concrete Volume · Corner Angle · Crown Molding · Decking · Diagonal · Frame Spacing · Lumber · Miter Joint · Overlapping Boards · Parquet Floor · Ramp · Roofing · Slope · Stairs · Volume
  
 ### 🔄 Conversion (3 calculators)
