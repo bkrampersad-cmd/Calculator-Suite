@@ -2,7 +2,7 @@
  
 > *Why juggle a dozen different tools when everything you need can live beautifully in one place?*
  
-A free, fully offline calculator suite with **49 calculators across 8 categories** — no ads, no subscriptions, no account required. Works in any browser and installs as a native-feeling app on your phone or desktop.
+A free, fully offline calculator suite with **50 calculators across 8 categories** — no ads, no subscriptions, no account required. Works in any browser and installs as a native-feeling app on your phone or desktop.
  
 **🌐 [beeranscalculatorsuite.com](https://beeranscalculatorsuite.com)**
  
@@ -17,7 +17,7 @@ Standard arithmetic with keyboard support and calculation history.
 Full scientific calculator with DEG/RAD mode — sin, cos, tan, log, ln, √, x², xʸ, n!, π, e, and more.
  
 ### 🏗️ Construction (18 calculators)
-Area · Batten Spacing · Concrete Volume · Corner Angle · Crown Molding · Decking · Diagonal · Frame Spacing · Lumber · Miter Joint · Overlapping Boards · Parquet Floor · Ramp · Roofing · Slope · Stairs · Volume
+Master · Area · Batten Spacing · Concrete Volume · Corner Angle · Crown Molding · Decking · Diagonal · Frame Spacing · Lumber · Miter Joint · Overlapping Boards · Parquet Floor · Ramp · Roofing · Slope · Stairs · Volume
  
 ### 🔄 Conversion (3 calculators)
 Currency Converter (live rates) · Time & Date · Unit Converter (length, weight, temperature, volume, area, speed)
@@ -32,7 +32,7 @@ Amortization · Bill Splitter · Compound Interest · Credit Card Payoff · Depr
 Binary ↔ Hex · IP Converter · IPv6 Calculator · Subnet / CIDR · Subnet Cheat Sheet · Supernet
  
 ### 🏥 Medical (6 calculators)
-BMI Calculator · Body Surface Area · Drug Dosage · IV Drip Rate · Opioid Conversion · Pharmacy Dilution
+BMI Calculator · Body Surface Area · Drug Dosage · IV Drip Rate · Opioid Conversion · Pharmacy Dilution · Creatinine Clearance
  
 > ⚠️ Medical calculators are for clinical reference only. Always verify with a licensed healthcare professional.
  
