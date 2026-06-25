@@ -31,7 +31,7 @@ Amortization · Bill Splitter · Compound Interest · Credit Card Payoff · Depr
 ### 🌐 IT Networking (6 calculators)
 Binary ↔ Hex · IP Converter · IPv6 Calculator · Subnet / CIDR · Subnet Cheat Sheet · Supernet
  
-### 🏥 Medical (6 calculators)
+### 🏥 Medical (7 calculators)
 BMI Calculator · Body Surface Area · Drug Dosage · IV Drip Rate · Opioid Conversion · Pharmacy Dilution · Creatinine Clearance
  
 > ⚠️ Medical calculators are for clinical reference only. Always verify with a licensed healthcare professional.
